@@ -47,7 +47,7 @@ create table tb_project_mm
 (
     project_id    int         not null comment '프로젝트 아이디',
     user_id       varchar(8)  not null comment '사용자 아이디',
-    year          varchar(4)  not null comment '년도',
+    project_year  varchar(4)  not null comment '년도',
     type          varchar(10) not null comment '종류 (EXPECT, ACTUAL, REQ_EXPECT, REQ_ACTUAL)',
     m1          float       null comment '1월',
     m2          float       null comment '2월',
@@ -67,7 +67,7 @@ create table tb_project_mm
     modified_date datetime    null comment '수정 날짜',
     primary key (project_id, user_id),
     constraint tb_project_mm_pk
-        unique (project_id, user_id, year, type),
+        unique (project_id, user_id, project_year, type),
     constraint tb_project_mm_tb_project_id_fk
         foreign key (project_id) references tb_project (id),
     constraint tb_project_mm_tb_user_id_fk
