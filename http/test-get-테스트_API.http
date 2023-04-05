@@ -1,0 +1,15 @@
+###
+GET http://{{ip}}:{{port}}/test
+Content-Type: application/json
+
+###
+GET http://{{ip}}:{{port}}/test/id
+Content-Type: application/json
+
+###
+GET http://{{ip}}:{{port}}/test/map
+Content-Type: application/json
+
+###
+GET http://{{ip}}:{{port}}/test/object
+Content-Type: application/json

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hod.project.hive.mapper.TestMapper">
+    <select id="findSomething" resultType="string">
+        SELECT uuid() AS id
+    </select>
+
+    <select id="findSomeById" parameterType="int" resultType="string">
+        SELECT #{id} AS id
+    </select>
+
+    <select id="findObjectTypeMap" resultType="hashmap">
+        SELECT 1234 AS id
+    </select>
+
+    <select id="findObject" resultType="com.hod.project.hive.entity.TestObject">
+        SELECT 1234 AS id
+    </select>
+
+</mapper>
