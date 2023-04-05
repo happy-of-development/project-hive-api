@@ -1,4 +1,4 @@
-package com.hod.project.hive.entity;
+package com.hod.project.hive.test.entity;
 
 import lombok.Data;
 

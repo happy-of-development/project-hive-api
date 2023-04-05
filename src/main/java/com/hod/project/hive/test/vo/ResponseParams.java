@@ -1,4 +1,4 @@
-package com.hod.project.hive.common.vo;
+package com.hod.project.hive.test.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

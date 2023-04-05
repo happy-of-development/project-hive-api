@@ -1,6 +1,6 @@
-package com.hod.project.hive.mapper;
+package com.hod.project.hive.test.service;
 
-import com.hod.project.hive.entity.TestObject;
+import com.hod.project.hive.test.entity.TestObject;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
