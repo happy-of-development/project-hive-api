@@ -12,16 +12,19 @@ create table tb_project
     modified_date datetime    null comment '수정 날짜'
 );
 
+
 create table tb_team
 (
-    id            int         not null comment '팀 아이디'
+    id            int             not null comment '팀 아이디'
         primary key,
-    name          varchar(50) not null comment '팀 이름',
-    created_id    varchar(8)  not null comment '생성 아이디',
-    created_date  datetime    not null comment '생성 날짜',
-    modified_id   varchar(8)  null comment '수정 아이디',
-    modified_date datetime    null comment '수정 날짜'
+    name          varchar(50)     not null comment '팀 이름',
+    description   varchar(200)    null comment '팀 설명',
+    created_id    varchar(8)      not null comment '생성 아이디',
+    created_date  datetime        not null comment '생성 날짜',
+    modified_id   varchar(8)      null comment '수정 아이디',
+    modified_date datetime        null comment '수정 날짜'
 );
+
 
 create table tb_user
 (
@@ -31,6 +34,7 @@ create table tb_user
     password      varchar(25) not null comment '사용자 패스워드',
     del_yn        varchar(1)  not null comment '삭제 여부 Y, N',
     mobile        varchar(11) null comment '휴대폰 번호',
+    email         varchar(50) null comment '이메일',
     photo         blob        null comment '사진',
     created_id    varchar(8)  not null comment '생성 아이디',
     created_date  datetime    not null comment '생성 날짜',
@@ -38,37 +42,39 @@ create table tb_user
     modified_date datetime    null comment '수정 날짜'
 );
 
+
 create table tb_project_mm
 (
     project_id    int         not null comment '프로젝트 아이디',
     user_id       varchar(8)  not null comment '사용자 아이디',
-    project_year  varchar(4)  not null comment '년도',
+    year          varchar(4)  not null comment '년도',
     type          varchar(10) not null comment '종류 (EXPECT, ACTUAL, REQ_EXPECT, REQ_ACTUAL)',
-    m1            float       null comment '1월',
-    m2            float       null comment '2월',
-    m3            float       null comment '3월',
-    m4            float       null comment '4월',
-    m5            float       null comment '5월',
-    m6            float       null comment '6월',
-    m7            float       null comment '7월',
-    m8            float       null comment '8월',
-    m9            float       null comment '9월',
-    m10           float       null comment '10월',
-    m11           float       null comment '11월',
-    m12           float       null comment '12월',
+    m1          float       null comment '1월',
+    m2          float       null comment '2월',
+    m3          float       null comment '3월',
+    m4          float       null comment '4월',
+    m5          float       null comment '5월',
+    m6          float       null comment '6월',
+    m7          float       null comment '7월',
+    m8          float       null comment '8월',
+    m9          float       null comment '9월',
+    m10         float       null comment '10월',
+    m11         float       null comment '11월',
+    m12         float       null comment '12월',
     created_id    varchar(8)  not null comment '생성 아이디',
     created_date  datetime    not null comment '생성 날짜',
     modified_id   varchar(8)  null comment '수정 아이디',
     modified_date datetime    null comment '수정 날짜',
-    primary key (project_id, user_id, project_year, type),
+    primary key (project_id, user_id),
     constraint tb_project_mm_pk
-        unique (project_id, user_id, project_year, type),
+        unique (project_id, user_id, year, type),
     constraint tb_project_mm_tb_project_id_fk
         foreign key (project_id) references tb_project (id),
     constraint tb_project_mm_tb_user_id_fk
         foreign key (user_id) references tb_user (id)
 )
     comment '프로젝트 MM 테이블';
+
 
 create table tb_project_user
 (
@@ -87,6 +93,7 @@ create table tb_project_user
 )
     comment '프로젝트-사용자 연관 테이블';
 
+
 create table tb_system_history
 (
     id       varchar(36) not null comment '히스토리 아이디'
@@ -100,6 +107,7 @@ create table tb_system_history
         foreign key (user_id) references tb_user (id)
 )
     comment '시스템 기록 테이블';
+
 
 create table tb_team_user
 (
@@ -115,30 +123,3 @@ create table tb_team_user
     constraint tb_team_user_tb_user_id_fk
         foreign key (user_id) references tb_user (id)
 );
-
-
--- TB_USER
-insert into tb_user (id, name, password, del_yn, mobile, photo, created_id, created_date, modified_id, modified_date)
-values  ('0', '관리자', 'password', 'N', '01094971093', null, '0', '2023-04-09 15:42:57', '0', '2023-04-09 15:43:11'),
-        ('1', '백봉준', 'password', 'N', '01094971093', null, '0', '2023-04-09 15:43:00', '0', '2023-04-09 15:43:14');
-
--- TB_TAEM
-insert into tb_team (id, name, created_id, created_date, modified_id, modified_date)
-values  (0, '개발1팀', '0', '2023-04-09 15:34:02', '0', '2023-04-09 15:34:09');
-
--- TB_TEAM_USER
-insert into tb_team_user (team_id, user_id, created_id, created_date, modified_id, modified_date)
-values  (0, '1', '0', '2023-04-09 17:57:28', '0', '2023-04-09 17:57:33');
-
--- TB_PROJECT
-insert into tb_project (id, name, begin_date, end_date, status, created_id, created_date, modified_id, modified_date)
-values  (0, '프로젝트 하이브', '2023-01-01 00:00:00', '2023-12-31 00:00:00', 'INIT', '0', '2023-04-09 17:54:25', '0', '2023-04-09 17:54:31');
-
--- TB_PROJECT_USER
-insert into tb_project_user (project_id, user_id, role, created_id, created_date, modified_id, modified_date)
-values  (0, '1', null, '0', '2023-04-09 17:56:21', '0', '2023-04-09 17:56:23');
-
--- TB_PROJECT_MM
-insert into tb_project_mm (project_id, user_id, project_year, type, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, created_id, created_date, modified_id, modified_date)
-values  (0, '1', '2023', 'ACTUAL', 1, 1, 1, 1, 1, 1, 0, 0, null, null, null, null, '0', '2023-04-09 18:17:21', '0', '2023-04-09 18:17:23'),
-        (0, '1', '2023', 'EXPECT', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, '0', '2023-04-09 18:17:21', '0', '2023-04-09 18:17:23');

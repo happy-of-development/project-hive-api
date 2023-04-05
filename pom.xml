@@ -28,7 +28,14 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <version>2.1.214</version>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.24</version>
         </dependency>
 
         <dependency>
@@ -71,11 +78,13 @@
                 <includes>
                     <include>**/*.xml</include>
                 </includes>
-                <filtering>false</filtering>
-                <targetPath>${project.build.outputDirectory}</targetPath>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering> <!-- 프로파일에서 @ 동작을 위해 추가 -->
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
             </resource>
         </resources>
 
