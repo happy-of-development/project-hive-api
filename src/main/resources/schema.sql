@@ -65,7 +65,7 @@ create table tb_project_mm
     created_date  datetime    not null comment '생성 날짜',
     modified_id   varchar(8)  null comment '수정 아이디',
     modified_date datetime    null comment '수정 날짜',
-    primary key (project_id, user_id),
+    primary key (project_id, user_id, project_year, type),
     constraint tb_project_mm_pk
         unique (project_id, user_id, project_year, type),
     constraint tb_project_mm_tb_project_id_fk
