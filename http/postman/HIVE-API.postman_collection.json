@@ -1,0 +1,113 @@
+{
+	"info": {
+		"_postman_id": "b8ae80b5-2fda-4e55-93b1-e3088d01d522",
+		"name": "HIVE-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10160811"
+	},
+	"item": [
+		{
+			"name": "GET /user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/user?id=11111111",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "11111111"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /user",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=UTF-8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\" : \"11111111\",\n    \"name\" : \"바뀐이름\",\n    \"password\" : \"112233\",\n    \"mobile\" : \"01022223333\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/user",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /user",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=UTF-8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\" : \"33333333\",\n    \"name\" : \"추가한 이름\",\n    \"password\" : \"112233\",\n    \"mobile\" : \"01022223333\",\n    \"email\" : \"insert@hotmail.com\",\n    \"photo\" : \"ABCDEFD\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/user",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.globals.set(\"base_url\", \"http://localhost:9080\");"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
