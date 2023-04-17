@@ -26,4 +26,8 @@
         WHERE u.id = #{user.id}
     </update>
 
+    <delete id="deleteUser" parameterType="string">
+        UPDATE tb_user SET del_yn = 'Y' WHERE id = #{id}
+    </delete>
+
 </mapper>

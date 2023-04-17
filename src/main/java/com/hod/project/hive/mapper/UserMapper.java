@@ -10,4 +10,5 @@ public interface UserMapper {
     void addUser(@Param("user") com.hod.project.hive.dto.UserDto user);
     User findUser(@Param("id") String id);
     void updateUser(@Param("user") com.hod.project.hive.dto.UserDto user);
+    void deleteUser(@Param("id") String id);
 }

@@ -23,4 +23,8 @@ public class UserService {
     public void updateUser(UserDto user) {
         userMapper.updateUser(user);
     }
+
+    public void deleteUser(String id) {
+        userMapper.deleteUser(id);
+    }
 }
