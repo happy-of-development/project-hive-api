@@ -16,6 +16,12 @@ public class ProjectService {
     ProjectMapper projectMapper;
 
     public List<Project> getProject(String beginDate, String endDate, String status) {
-        return projectMapper.findProject(beginDate, endDate, status);
+        List<Project> projectList =  projectMapper.findProject(beginDate, endDate, status);
+        for(Project project : projectList) {
+           project.setExpectMm(Float.toString(projectMapper.findProjectTotalMm(project.getId(), "EXPECT")));
+           project.setActualMm(Float.toString(projectMapper.findProjectTotalMm(project.getId(), "ACTUAL")));
+        }
+
+        return projectList;
     }
 }

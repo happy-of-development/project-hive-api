@@ -12,25 +12,11 @@
         	u.name pmName,
         	p.begin_date beginDate,
         	p.end_date endDate,
-        	p.status status,
-        	pma.actualMm actualMm,
-        	pme.expectMm expectMm
+        	p.status status
         FROM tb_project p
         JOIN tb_project_user pu ON pu.project_id = p.id
         	AND pu.ROLE = 'PM'
         JOIN tb_user u ON u.id = pu.user_id
-        JOIN (
-        	SELECT project_id,
-        		SUM(m1) + SUM(m2) + SUM(m3) + SUM(m4) + SUM(m5) + SUM(m6) + SUM(m7) + SUM(m8) + SUM(m9) + SUM(m10) + SUM(m11) + SUM(m12) actualMm
-        	FROM tb_project_mm
-        	WHERE type = 'ACTUAL'
-        	) pma ON pma.project_id = p.id
-        JOIN (
-        	SELECT project_id,
-        		SUM(m1) + SUM(m2) + SUM(m3) + SUM(m4) + SUM(m5) + SUM(m6) + SUM(m7) + SUM(m8) + SUM(m9) + SUM(m10) + SUM(m11) + SUM(m12) expectMm
-        	FROM tb_project_mm
-        	WHERE type = 'EXPECT'
-        	) pme ON pme.project_id = p.id
         WHERE (
         <![CDATA[(
         			p.begin_date <= PARSEDATETIME(#{beginDate}, 'yyyyMMdd')
@@ -46,5 +32,22 @@
             AND p.status = #{status}
         </if>
     </select>
+	<select id="findProjectTotalMm" resultType="java.lang.Float">
+		SELECT SUM(m1) + SUM(m2) + SUM(m3) + SUM(m4) + SUM(m5) + SUM(m6) + SUM(m7) + SUM(m8) + SUM(m9) + SUM(m10) + SUM(m11) + SUM(m12)
+			FROM tb_project_mm WHERE project_id = #{id} AND type = #{type}
+		<!--float findProjectTotalMm(@Param("id") String id, @Param("projectYear") String projectYear, @Param("type") String type); -->
+<!--		JOIN (-->
+<!--	        	SELECT project_id,-->
+<!--	        		SUM(m1) + SUM(m2) + SUM(m3) + SUM(m4) + SUM(m5) + SUM(m6) + SUM(m7) + SUM(m8) + SUM(m9) + SUM(m10) + SUM(m11) + SUM(m12) actualMm-->
+<!--	        	FROM tb_project_mm-->
+<!--	        	WHERE type = 'ACTUAL'-->
+<!--	        	) pma ON pma.project_id = p.id-->
+<!--	        JOIN (-->
+<!--	        	SELECT project_id,-->
+<!--	        		SUM(m1) + SUM(m2) + SUM(m3) + SUM(m4) + SUM(m5) + SUM(m6) + SUM(m7) + SUM(m8) + SUM(m9) + SUM(m10) + SUM(m11) + SUM(m12) expectMm-->
+<!--	        	FROM tb_project_mm-->
+<!--	        	WHERE type = 'EXPECT'-->
+<!--	        	) pme ON pme.project_id = p.id-->
+	</select>
 
 </mapper>
