@@ -2,6 +2,7 @@ package com.hod.project.hive.service;
 
 import com.hod.project.hive.entity.Project;
 
+import com.hod.project.hive.entity.ProjectDetail;
 import com.hod.project.hive.mapper.ProjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,10 @@ public class ProjectService {
         }
 
         return projectList;
+    }
+
+    public ProjectDetail getProjectDetail(String id) {
+        ProjectDetail detail = projectMapper.findProjectDetail(id);
+        return null;
     }
 }

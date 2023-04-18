@@ -29,4 +29,14 @@ public class ProjectController {
 
         return ResponseEntity.ok(ApiResponseFactory.create(map));
     }
+
+    @GetMapping("/project/detail")
+    public ResponseEntity<ApiResponse> getProject(@RequestParam String id) {
+//        List<Project> projectList = projectService.getProject(beginDate, endDate, status);
+//        Map<String, Object> map = new HashMap<String, Object>();
+//        map.put("projectList", projectList);
+
+//        return ResponseEntity.ok(ApiResponseFactory.create(map));
+        return null;
+    }
 }
