@@ -7,8 +7,8 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface UserMapper {
-    void addUser(@Param("user") com.hod.project.hive.dto.UserDto user);
+    void addUser(@Param("user") UserDto user);
     User findUser(@Param("id") String id);
-    void updateUser(@Param("user") com.hod.project.hive.dto.UserDto user);
+    void updateUser(@Param("user") UserDto user);
     void deleteUser(@Param("id") String id);
 }
