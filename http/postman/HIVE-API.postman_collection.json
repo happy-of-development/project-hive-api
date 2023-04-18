@@ -96,8 +96,9 @@
 						],
 						"body": {
 							"mode": "raw",
+
 							"raw": "{\n    \"id\" : \"11111111\",\n    \"name\" : \"바뀐이름\",\n    \"password\" : \"112233\",\n    \"mobile\" : \"01022223333\"\n}"
-						},
+					},
 						"url": {
 							"raw": "{{base_url}}/user",
 							"host": [
