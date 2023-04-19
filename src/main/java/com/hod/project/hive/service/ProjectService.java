@@ -1,9 +1,14 @@
-package com.hod.project.hive.project.service;
+package com.hod.project.hive.service;
 
-import com.hod.project.hive.project.entity.ProjectManMonth;
-import com.hod.project.hive.project.dto.DashboardPersonalProjectDto;
-import com.hod.project.hive.project.dto.ManMonthDto;
-import com.hod.project.hive.project.dto.PersonalProjectDto;
+import com.hod.project.hive.dto.DashboardPersonalProjectDto;
+import com.hod.project.hive.dto.ManMonthDto;
+import com.hod.project.hive.dto.PersonalProjectDto;
+import com.hod.project.hive.entity.Project;
+
+import com.hod.project.hive.entity.ProjectDetail;
+import com.hod.project.hive.entity.ProjectManMonth;
+import com.hod.project.hive.mapper.ProjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,11 +17,26 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class ProjectService {
-
     @Autowired
     private ProjectMapper projectMapper;
+
+    public List<Project> getProject(String beginDate, String endDate, String status) {
+        List<Project> projectList =  projectMapper.findProject(beginDate, endDate, status);
+        for(Project project : projectList) {
+           project.setExpectMm(Float.toString(projectMapper.findProjectTotalMm(project.getId(), "EXPECT")));
+           project.setActualMm(Float.toString(projectMapper.findProjectTotalMm(project.getId(), "ACTUAL")));
+        }
+
+        return projectList;
+    }
+
+    public ProjectDetail getProjectDetail(String id) {
+        ProjectDetail detail = projectMapper.findProjectDetail(id);
+        return null;
+    }
 
     /**
      * <pre>
@@ -52,8 +72,9 @@ public class ProjectService {
             PersonalProjectDto personalProjectDto = map.get(key);
             if (Objects.isNull(personalProjectDto)) {
                 personalProjectDto = new PersonalProjectDto();
-                personalProjectDto.setId(projectMm.getProjectId());
-                personalProjectDto.setName(projectMm.getProjectName());
+                personalProjectDto.setProjectId(projectMm.getProjectId());
+                personalProjectDto.setProjectName(projectMm.getProjectName());
+                personalProjectDto.setUserId(projectMm.getUserId());
                 personalProjectDto.setBeginDate(dateFormat.format(projectMm.getBeginDate()));
                 personalProjectDto.setEndDate(dateFormat.format(projectMm.getEndDate()));
                 personalProjectDto.setMmList(new ArrayList<>());
@@ -72,10 +93,11 @@ public class ProjectService {
     }
 
     private Float getTotalMm(List<ProjectManMonth> list, String type) {
-        return (float) list.stream()
+        Float total = (float) list.stream()
                 .filter(o -> type.equalsIgnoreCase(o.getType()))
                 .mapToDouble(ProjectManMonth::totalManMonth)
                 .sum();
-    }
 
+        return Math.round(total * 100) / 100.0f;
+    }
 }

@@ -1,8 +1,8 @@
-package com.hod.project.hive.project.controller;
+package com.hod.project.hive.controller;
 
 import com.hod.project.hive.common.factory.ApiResponseFactory;
-import com.hod.project.hive.project.service.ProjectService;
-import com.hod.project.hive.project.dto.DashboardPersonalProjectDto;
+import com.hod.project.hive.service.ProjectService;
+import com.hod.project.hive.dto.DashboardPersonalProjectDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

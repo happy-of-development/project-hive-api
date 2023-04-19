@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hod.project.hive.test.service.TestMapper">
+<mapper namespace="com.hod.project.hive.test.mapper.TestMapper">
     <select id="findSomething" resultType="string">
         SELECT uuid() AS id
     </select>

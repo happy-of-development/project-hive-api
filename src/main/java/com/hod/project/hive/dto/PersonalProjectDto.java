@@ -1,16 +1,16 @@
-package com.hod.project.hive.project.dto;
+package com.hod.project.hive.dto;
 
 import lombok.Data;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Objects;
 
 @Data
 public class PersonalProjectDto {
 
-    private String id;
-    private String name;
+    private String projectId;
+    private String projectName;
+    private String userId;
     private Float progress;
     private String beginDate;
     private String endDate;

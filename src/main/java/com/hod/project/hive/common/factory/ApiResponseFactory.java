@@ -10,4 +10,12 @@ public class ApiResponseFactory {
         result.setData(object);
         return result;
     }
+
+    public static ApiResponse<Object> createError(String result, String reason) {
+        ApiResponse<Object> response = new ApiResponse<Object>();
+        response.setResult(result);
+        response.setReason(reason);
+
+        return response;
+    }
 }

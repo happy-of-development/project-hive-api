@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hod.project.hive.mapper.ProjectMapper">
+
+    <!-- TODO : PARSEDATETIME은 H2 용이며 MySQL로 연동시에는 다른 것으로 변경 필요 -->
+    <select id="findProject" parameterType="string" resultType="com.hod.project.hive.entity.Project">
+        SELECT p.id id,
+        	p.name name,
+        	pu.user_id pmId,
+        	u.name pmName,
+        	p.begin_date beginDate,
+        	p.end_date endDate,
+        	p.status status
+        FROM tb_project p
+        JOIN tb_project_user pu
+            ON pu.project_id = p.id AND pu.ROLE = 'PM'
+        JOIN tb_user u
+            ON u.id = pu.user_id
+        WHERE (
+        <![CDATA[(
+        			p.begin_date <= PARSEDATETIME(#{beginDate}, 'yyyyMMdd')
+        			AND p.end_date >= PARSEDATETIME(#{beginDate}, 'yyyyMMdd')
+        			)
+        		OR (
+        			p.begin_date <= PARSEDATETIME(#{endDate}, 'yyyyMMdd')
+        			AND p.end_date >= PARSEDATETIME(#{endDate}, 'yyyyMMdd')
+        			)
+        		)]]>
+
+        <if test="status != 'ALL'">
+            AND p.status = #{status}
+        </if>
+    </select>
+
+	<select id="findProjectTotalMm" resultType="java.lang.Float">
+		SELECT SUM(m1) + SUM(m2) + SUM(m3) + SUM(m4) + SUM(m5) + SUM(m6)
+            + SUM(m7) + SUM(m8) + SUM(m9) + SUM(m10) + SUM(m11) + SUM(m12)
+        FROM tb_project_mm
+        WHERE project_id = #{id}
+            AND type = #{type}
+	</select>
+
+    <select id="findProjectDetail" resultType="com.hod.project.hive.entity.ProjectDetail">
+
+    </select>
+
+    <select id="findProjectManMonth" resultType="com.hod.project.hive.entity.ProjectManMonth">
+        SELECT
+        U.id            AS user_id,
+        U.name          AS user_name,
+        P.id            AS project_id,
+        P.name          AS project_name,
+        M.project_year  AS project_year,
+        P.begin_date    AS begin_date,
+        P.end_date      AS end_date,
+        M.type          AS type,
+        M.m1,
+        M.m2,
+        M.m3,
+        M.m4,
+        M.m5,
+        M.m6,
+        M.m7,
+        M.m8,
+        M.m9,
+        M.m10,
+        M.m11,
+        M.m12,
+        M.created_id,
+        M.created_date,
+        M.modified_id,
+        M.modified_date
+        FROM tb_project_mm  AS M
+        JOIN tb_project     AS P ON M.project_id = P.id
+        JOIN tb_user        AS U ON M.user_id = U.id
+        WHERE project_year = #{projectYear}
+        <if test="userId != null">
+            AND M.user_id = #{userId}
+        </if>
+        AND M.type IN ('EXPECT', 'ACTUAL')
+    </select>
+
+</mapper>

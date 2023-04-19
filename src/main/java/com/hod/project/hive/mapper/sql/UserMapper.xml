@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hod.project.hive.mapper.UserMapper">
+
+    <insert id="addUser" parameterType="com.hod.project.hive.dto.UserDto">
+        INSERT INTO tb_user (
+        	id,
+        	name,
+        	password,
+        	del_yn,
+        	mobile,
+        	email,
+        	created_id,
+        	created_date,
+        	modified_id,
+        	modified_date
+        	)
+        VALUES (
+        	#{user.id},
+        	#{user.name},
+        	#{user.password},
+        	'N',
+        	#{user.mobile},
+        	#{user.email},
+        	'10000000',
+        	NOW(),
+        	'10000000',
+        	NOW()
+        	)
+    </insert>
+
+    <select id="findUser" parameterType="string" resultType="com.hod.project.hive.entity.User">
+        SELECT u.id id,
+        	u.name name,
+        	u.photo photo,
+        	u.mobile mobile,
+        	u.email email,
+        	t.name teamName
+        FROM tb_user u,
+        	(
+        		SELECT tb_team.name
+        		FROM tb_team,
+        			tb_team_user
+        		WHERE tb_team_user.user_id = #{id}
+        			AND tb_team.id = tb_team_user.team_id
+        		) t
+        WHERE u.id = #{id};
+    </select>
+
+    <update id="updateUser" parameterType="com.hod.project.hive.dto.UserDto">
+        UPDATE tb_user u
+        SET u.name = #{user.name},
+        	u.password = #{user.password},
+        	u.mobile = #{user.mobile},
+        	u.email = #{user.email},
+        	u.photo = #{user.photo},
+        	u.modified_date = NOW()
+        WHERE u.id = #{user.id}
+    </update>
+
+    <delete id="deleteUser" parameterType="string">
+        UPDATE tb_user
+        SET del_yn = 'Y'
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
