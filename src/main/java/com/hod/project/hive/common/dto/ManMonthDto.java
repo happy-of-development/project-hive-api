@@ -1,4 +1,4 @@
-package com.hod.project.hive.dto;
+package com.hod.project.hive.common.dto;
 
 import lombok.Data;
 

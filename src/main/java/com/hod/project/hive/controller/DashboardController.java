@@ -2,7 +2,7 @@ package com.hod.project.hive.controller;
 
 import com.hod.project.hive.common.factory.ApiResponseFactory;
 import com.hod.project.hive.service.ProjectService;
-import com.hod.project.hive.dto.DashboardPersonalProjectDto;
+import com.hod.project.hive.dto.DashboardProjectPersonalDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class DashboardController {
 
     @GetMapping("/dashboard/project")
     public ResponseEntity<?> getProjectManMonth(@RequestParam String year, @RequestParam(required = false) String id) {
-        DashboardPersonalProjectDto dashboardPersonalProjectDto = projectService.getDashboardProject(year, id);
-        return ResponseEntity.ok(ApiResponseFactory.create(dashboardPersonalProjectDto));
+        DashboardProjectPersonalDto dto = projectService.getDashboardProject(year, id);
+        return ResponseEntity.ok(ApiResponseFactory.create(dto));
     }
 
 }

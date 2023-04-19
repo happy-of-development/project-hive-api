@@ -2,6 +2,7 @@ package com.hod.project.hive.controller;
 
 import com.hod.project.hive.common.factory.ApiResponseFactory;
 import com.hod.project.hive.common.vo.ApiResponse;
+import com.hod.project.hive.dto.ProjectManMonthDto;
 import com.hod.project.hive.entity.Project;
 import com.hod.project.hive.service.ProjectService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,5 +39,11 @@ public class ProjectController {
 
 //        return ResponseEntity.ok(ApiResponseFactory.create(map));
         return null;
+    }
+
+    @GetMapping("/project/mm")
+    public ResponseEntity<ApiResponse> getProjectManMonth(@RequestParam String year) {
+        ProjectManMonthDto dto = projectService.getProjectManMonth(year);
+        return ResponseEntity.ok(ApiResponseFactory.create(dto));
     }
 }

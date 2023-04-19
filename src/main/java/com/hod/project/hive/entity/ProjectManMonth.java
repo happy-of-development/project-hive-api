@@ -40,9 +40,11 @@ public class ProjectManMonth {
 
     public Float totalManMonth() {
         List<Float> list = Arrays.asList(m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12);
-        return (float) list.stream()
+        float total = (float) list.stream()
                 .filter(Objects::nonNull)
                 .mapToDouble(mm -> mm)
                 .sum();
+
+        return Math.round(total * 100) / 100.0f;
     }
 }
