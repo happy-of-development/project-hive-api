@@ -3,6 +3,7 @@ package com.hod.project.hive.controller;
 import com.hod.project.hive.common.factory.ApiResponseFactory;
 import com.hod.project.hive.common.vo.ApiResponse;
 import com.hod.project.hive.entity.Project;
+import com.hod.project.hive.entity.ProjectDetail;
 import com.hod.project.hive.service.ProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,8 @@ public class ProjectController {
 
     @GetMapping("/project/detail")
     public ResponseEntity<ApiResponse> getProject(@RequestParam String id) {
-//        List<Project> projectList = projectService.getProject(beginDate, endDate, status);
-//        Map<String, Object> map = new HashMap<String, Object>();
-//        map.put("projectList", projectList);
+       ProjectDetail detail = projectService.getProjectDetail(id);
 
-//        return ResponseEntity.ok(ApiResponseFactory.create(map));
-        return null;
+       return ResponseEntity.ok(ApiResponseFactory.create(detail));
     }
 }
