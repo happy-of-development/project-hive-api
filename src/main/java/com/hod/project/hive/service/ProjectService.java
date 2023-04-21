@@ -46,14 +46,14 @@ public class ProjectService {
      * @return
      */
     @Transactional
-    public DashboardProjectPersonalDto getDashboardProject(String projectYear, String userId) {
+    public DashboardProjectPersonalResponse getDashboardProject(String projectYear, String userId) {
         List<ProjectManMonth> dao = projectMapper.findProjectManMonth(projectYear, userId);
 
         Float expectTotalMm = getTotalMm(dao, "EXPECT");
         Float actualTotalMm = getTotalMm(dao, "ACTUAL");
-        List<DashboardProjectPersonalDto.Project> projectList = createDashboardProjectList(dao);
+        List<DashboardProjectPersonalResponse.Project> projectList = createDashboardProjectList(dao);
 
-        DashboardProjectPersonalDto result = new DashboardProjectPersonalDto();
+        DashboardProjectPersonalResponse result = new DashboardProjectPersonalResponse();
         result.setYear(projectYear);
         result.setExpectTotalMm(expectTotalMm);
         result.setActualTotalMm(actualTotalMm);
@@ -61,15 +61,15 @@ public class ProjectService {
         return result;
     }
 
-    private List<DashboardProjectPersonalDto.Project> createDashboardProjectList(List<ProjectManMonth> dao) {
-        Map<String, DashboardProjectPersonalDto.Project> map = new HashMap<>();
+    private List<DashboardProjectPersonalResponse.Project> createDashboardProjectList(List<ProjectManMonth> dao) {
+        Map<String, DashboardProjectPersonalResponse.Project> map = new HashMap<>();
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         for (ProjectManMonth projectMm : dao) {
             String key = projectMm.getProjectId() + "_" + projectMm.getUserId();
-            DashboardProjectPersonalDto.Project project = map.get(key);
+            DashboardProjectPersonalResponse.Project project = map.get(key);
             if (Objects.isNull(project)) {
-                project = new DashboardProjectPersonalDto.Project();
+                project = new DashboardProjectPersonalResponse.Project();
                 project.setProjectId(projectMm.getProjectId());
                 project.setProjectName(projectMm.getProjectName());
                 project.setUserId(projectMm.getUserId());
@@ -106,29 +106,29 @@ public class ProjectService {
      * @param projectYear 프로젝트 년도
      * @return
      */
-    public ProjectManMonthDto getProjectManMonth(String projectYear) {
+    public ProjectManMonthResponse getProjectManMonth(String projectYear) {
         List<ProjectManMonth> dao = projectMapper.findProjectManMonth(projectYear, null);
 
-        List<ProjectManMonthDto.Project> projectList = createProjectList(dao);
+        List<ProjectManMonthResponse.Project> projectList = createProjectList(dao);
 
-        ProjectManMonthDto result = new ProjectManMonthDto();
+        ProjectManMonthResponse result = new ProjectManMonthResponse();
         result.setProjectList(projectList);
         return result;
     }
 
-    private List<ProjectManMonthDto.Project> createProjectList(List<ProjectManMonth> dao) {
+    private List<ProjectManMonthResponse.Project> createProjectList(List<ProjectManMonth> dao) {
         Map<String, List<ProjectManMonth>> groupingByProjectId = dao.stream()
                 .collect(Collectors.groupingBy(ProjectManMonth::getProjectId));
 
-        Map<String, ProjectManMonthDto.Project> projectIdMap = new HashMap<>();
+        Map<String, ProjectManMonthResponse.Project> projectIdMap = new HashMap<>();
 
         groupingByProjectId.forEach((projectId, projectDto) -> {
-            ProjectManMonthDto.Project project = projectIdMap.get(projectId);
+            ProjectManMonthResponse.Project project = projectIdMap.get(projectId);
             if (Objects.isNull(project)) {
                 ProjectManMonth firstItem = projectDto.get(0);
                 String projectName = firstItem.getProjectName();
 
-                project = new ProjectManMonthDto.Project();
+                project = new ProjectManMonthResponse.Project();
                 project.setId(projectId);
                 project.setName(projectName);
                 project.setUserList(new ArrayList<>());
@@ -136,14 +136,14 @@ public class ProjectService {
                 projectIdMap.put(projectId, project);
             }
 
-            Map<String, ProjectManMonthDto.User> userIdMap = new HashMap<>();
+            Map<String, ProjectManMonthResponse.User> userIdMap = new HashMap<>();
             for (ProjectManMonth projectMm : projectDto) {
                 String userId = projectMm.getUserId();
                 String userName = projectMm.getUserName();
 
-                ProjectManMonthDto.User user = userIdMap.get(userId);
+                ProjectManMonthResponse.User user = userIdMap.get(userId);
                 if (Objects.isNull(user)) {
-                    user = new ProjectManMonthDto.User();
+                    user = new ProjectManMonthResponse.User();
                     user.setId(userId);
                     user.setName(userName);
                     user.setMmList(new ArrayList<>());
@@ -158,11 +158,19 @@ public class ProjectService {
                 user.getMmList().add(mm);
             }
 
-            List<ProjectManMonthDto.User> userList = userIdMap.values().stream().collect(Collectors.toList());
+            List<ProjectManMonthResponse.User> userList = userIdMap.values().stream().collect(Collectors.toList());
             project.setUserList(userList);
         });
 
-        List<ProjectManMonthDto.Project> result = projectIdMap.values().stream().collect(Collectors.toList());
+        List<ProjectManMonthResponse.Project> result = projectIdMap.values().stream().collect(Collectors.toList());
         return result;
+    }
+
+    public void updateProjectManMonth(ProjectManMonthRequest request) {
+        List<ProjectManMonth> list = request.toProjectManMonthList();
+        int count = projectMapper.updateProjectManMonth(list);
+        if (count == 0) {
+            // TODO: 업데이트 행 수 반환, 0 이면 실패 처리
+        }
     }
 }

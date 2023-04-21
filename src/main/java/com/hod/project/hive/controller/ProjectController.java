@@ -2,15 +2,14 @@ package com.hod.project.hive.controller;
 
 import com.hod.project.hive.common.factory.ApiResponseFactory;
 import com.hod.project.hive.common.vo.ApiResponse;
-import com.hod.project.hive.dto.ProjectManMonthDto;
+import com.hod.project.hive.dto.ProjectManMonthResponse;
+import com.hod.project.hive.dto.ProjectManMonthRequest;
 import com.hod.project.hive.entity.Project;
 import com.hod.project.hive.service.ProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +42,13 @@ public class ProjectController {
 
     @GetMapping("/project/mm")
     public ResponseEntity<ApiResponse> getProjectManMonth(@RequestParam String year) {
-        ProjectManMonthDto dto = projectService.getProjectManMonth(year);
-        return ResponseEntity.ok(ApiResponseFactory.create(dto));
+        ProjectManMonthResponse response = projectService.getProjectManMonth(year);
+        return ResponseEntity.ok(ApiResponseFactory.create(response));
+    }
+
+    @PutMapping("/project/mm")
+    public ResponseEntity<ApiResponse> putProjectManMonth(@RequestBody ProjectManMonthRequest request) {
+        projectService.updateProjectManMonth(request);
+        return ResponseEntity.ok(ApiResponseFactory.create(null));
     }
 }

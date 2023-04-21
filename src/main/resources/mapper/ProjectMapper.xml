@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hod.project.hive.mapper.ProjectMapper">
 
     <!-- TODO : PARSEDATETIME은 H2 용이며 MySQL로 연동시에는 다른 것으로 변경 필요 -->
@@ -81,5 +81,31 @@
         </if>
         AND M.type IN ('EXPECT', 'ACTUAL')
     </select>
+
+    <update id="updateProjectManMonth">
+        <foreach collection="list" item="item" index="index" separator=";">
+            UPDATE tb_project_mm AS M
+            <trim prefix="SET" suffixOverrides=",">
+                <if test="item.m1 != null">M.m1 = #{item.m1},</if>
+                <if test="item.m2 != null">M.m2 = #{item.m2},</if>
+                <if test="item.m3 != null">M.m3 = #{item.m3},</if>
+                <if test="item.m4 != null">M.m4 = #{item.m4},</if>
+                <if test="item.m5 != null">M.m5 = #{item.m5},</if>
+                <if test="item.m6 != null">M.m6 = #{item.m6},</if>
+                <if test="item.m7 != null">M.m7 = #{item.m7},</if>
+                <if test="item.m8 != null">M.m8 = #{item.m8},</if>
+                <if test="item.m9 != null">M.m9 = #{item.m9},</if>
+                <if test="item.m10 != null">M.m10 = #{item.m10},</if>
+                <if test="item.m11 != null">M.m11 = #{item.m11},</if>
+                <if test="item.m12 != null">M.m12 = #{item.m12},</if>
+                <if test="item.m12 != null">M.modified_id = #{item.modifiedId},</if>
+                M.modified_date = now(),
+            </trim>
+            WHERE M.project_id = #{item.projectId}
+                AND M.user_id = #{item.userId}
+                AND M.project_year = #{item.projectYear}
+                AND M.type = #{item.type}
+        </foreach>
+    </update>
 
 </mapper>

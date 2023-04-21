@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ProjectManMonthDto {
+public class ProjectManMonthResponse {
 	private List<Project> projectList;
 
 

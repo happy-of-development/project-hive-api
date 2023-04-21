@@ -14,4 +14,5 @@ public interface ProjectMapper {
     float findProjectTotalMm(@Param("id") String id, @Param("type") String type);
     ProjectDetail findProjectDetail(@Param("id") String id);
     List<ProjectManMonth> findProjectManMonth(@Param("projectYear") String projectYear, @Param("userId") String userId);
+    int updateProjectManMonth(@Param("list") List<ProjectManMonth> list);
 }
