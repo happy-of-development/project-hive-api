@@ -29,7 +29,7 @@
                SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
-    
+
     <select id="findLastInsertId" resultType="Integer">
         SELECT LAST_INSERT_ID()
     </select>
@@ -45,7 +45,7 @@
             modified_date
             )
        VALUES (
-            #{id},
+            #{projectId},
             #{userId},
             #{role},
             'admin',
@@ -118,7 +118,7 @@
                 + IFNULL(m5, 0) + IFNULL(m6, 0) + IFNULL(m7, 0) + IFNULL(m8, 0)
                 + IFNULL(m9, 0) + IFNULL(m10, 0) + IFNULL(m11, 0) + IFNULL(m12, 0)), 0)
         FROM tb_project_mm
-        WHERE project_id = #{id}
+        WHERE project_id = #{projectId}
             AND type = #{type}
 
         <if test="userId != null">
@@ -139,7 +139,7 @@
             ON pu.project_id = p.id AND pu.ROLE = 'PM'
         LEFT JOIN tb_user u
             ON u.id = pu.user_id
-        WHERE p.id = #{id}
+        WHERE p.id = #{projectId}
     </select>
 
     <select id="findUserList" resultType="com.hod.project.hive.entity.ProjectDetail$ProjectUser">
@@ -155,8 +155,28 @@
             ON tu.user_id = u.id
         JOIN tb_team t
             ON t.id = tu.team_id
-        WHERE p.id = #{id}
+        WHERE p.id = #{projectId}
     </select>
+
+    <update id="updateProject">
+        UPDATE tb_project p
+        SET p.name = #{project.name},
+            p.begin_date = #{project.beginDate},
+            p.end_date =  #{project.endDate},
+            p.status = #{project.status},
+            p.modified_id = 'admin',
+            p.modified_date = NOW()
+        WHERE
+            p.id = #{project.id}
+    </update>
+
+    <update id="updateProjectUser">
+        UPDATE tb_project_user p
+        SET p.role = #{role}
+        WHERE
+            p.project_id = #{projectId}
+            AND p.user_id = #{userId}
+    </update>
 
     <select id="findProjectManMonth" resultType="com.hod.project.hive.entity.ProjectManMonth">
         SELECT
@@ -194,4 +214,30 @@
         AND M.type IN ('EXPECT', 'ACTUAL')
     </select>
 
+
+    <delete id="deletePrject">
+        DELETE
+        FROM tb_project
+        WHERE id = #{projectId}
+    </delete>
+
+    <delete id="deleteProjectUser">
+        DELETE
+        FROM tb_project_user
+        WHERE project_id = #{projectId}
+
+        <if test="userId != null">
+             AND user_id = #{userId}
+         </if>
+    </delete>
+
+    <delete id="deleteProjectMm">
+        DELETE
+        FROM tb_project_mm
+        WHERE project_id = #{projectId}
+
+        <if test="userId != null">
+             AND user_id = #{userId}
+         </if>
+    </delete>
 </mapper>

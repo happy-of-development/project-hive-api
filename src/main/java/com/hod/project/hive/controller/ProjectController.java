@@ -39,15 +39,29 @@ public class ProjectController {
     }
 
     @GetMapping("/project/detail")
-    public ResponseEntity<ApiResponse> getProjectDetail(@RequestParam String id) {
+    public ResponseEntity<ApiResponse> getProjectDetail(@RequestParam int id) {
        ProjectDetail detail = projectService.getProjectDetail(id);
 
        return ResponseEntity.ok(ApiResponseFactory.create(detail));
+    }
+
+    @PutMapping("/project")
+    public ResponseEntity<ApiResponse> updateProject(@RequestBody ProjectDto project) {
+       projectService.updateProject(project);
+
+       return ResponseEntity.ok(ApiResponseFactory.create(null));
     }
 
     @GetMapping("/project/mm")
     public ResponseEntity<ApiResponse> getProjectManMonth(@RequestParam String year) {
         ProjectManMonthDto dto = projectService.getProjectManMonth(year);
         return ResponseEntity.ok(ApiResponseFactory.create(dto));
+    }
+
+    @DeleteMapping("/project/{id}")
+    public ResponseEntity<ApiResponse> deleteProject(@PathVariable int id) {
+        projectService.deleteProject(id);
+
+        return ResponseEntity.ok(ApiResponseFactory.create(null));
     }
 }

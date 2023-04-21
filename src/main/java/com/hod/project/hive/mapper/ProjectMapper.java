@@ -13,13 +13,16 @@ import java.util.List;
 public interface ProjectMapper {
     int addProject(@Param("project") ProjectDto project);
     Integer findLastInsertId();
-    void addProjectUser(@Param("id") int projectId, @Param("userId") String userId, @Param("role") String role);
+    void addProjectUser(@Param("projectId") int projectId, @Param("userId") String userId, @Param("role") String role);
     void addProjectMm(@Param("projectId") int projectId, @Param("userId") String userId, @Param("projectYear") String projectYear, @Param("type") String type);
     List<Project> findProject(@Param("beginDate") String beginDate, @Param("endDate") String endDate, @Param("status") String status);
-    float findProjectTotalMm(@Param("id") String id, @Param("type") String type, @Param("userId") String userId);
-    ProjectDetail findProjectDetail(@Param("id") String id);
+    float findProjectTotalMm(@Param("projectId") int projectId, @Param("type") String type, @Param("userId") String userId);
+    ProjectDetail findProjectDetail(@Param("projectId") int projectId);
+    void updateProject(@Param("project") ProjectDto project);
+    void updateProjectUser(@Param("projectId") int projectId, @Param("userId") String userId, @Param("role") String role);
     List<ProjectManMonth> findProjectManMonth(@Param("projectYear") String projectYear, @Param("userId") String userId);
-    List<ProjectDetail.ProjectUser> findUserList(@Param("id") String id);
-
-
+    List<ProjectDetail.ProjectUser> findUserList(@Param("projectId") int projectId);
+    void deletePrject(@Param("projectId") int projectId);
+    void deleteProjectUser(@Param("projectId") int projectId, @Param("userId") String userId);
+    void deleteProjectMm(@Param("projectId") int projectId, @Param("userId") String userId);
 }

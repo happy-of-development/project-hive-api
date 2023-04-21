@@ -33,24 +33,6 @@
 					"response": []
 				},
 				{
-					"name": "DELETE /user",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/user/11111111",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"user",
-								"11111111"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "POST /user",
 					"protocolProfileBehavior": {
 						"disabledSystemHeaders": {}
@@ -105,6 +87,24 @@
 							],
 							"path": [
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/user/11111111",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"11111111"
 							]
 						}
 					},
@@ -195,6 +195,54 @@
 							],
 							"path": [
 								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /project",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\" : \"3\",\n    \"name\" : \"추가하고 바꾼 프로젝트\",\n    \"pmId\" : \"11111111\",\n    \"beginDate\" : \"2023-02-02\",\n    \"endDate\" : \"2023-12-12\",\n    \"status\" : \"INIT\",\n    \"userList\" : [\n        {\"id\" : \"11111111\" },\n        {\"id\" : \"22222222\" }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/project",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/project/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"project",
+								"3"
 							]
 						}
 					},

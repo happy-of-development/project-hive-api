@@ -28,15 +28,25 @@ public class ProjectService {
         projectMapper.addProject(project);
 
         int projectId = projectMapper.findLastInsertId();
-        int beginYear = LocalDate.parse(project.getBeginDate()).getYear();
-        int endYear = LocalDate.parse(project.getEndDate()).getYear();
 
+        List<String> userList = new ArrayList<>();
         for(ProjectDto.ProjectUser user : project.getUserList()) {
-            projectMapper.addProjectUser(projectId, user.getId(), user.getId().equals(project.getPmId())?"PM":"");
+            userList.add(user.getId());
+        }
+
+        addProjectUserAndMm(projectId, project.getBeginDate(), project.getEndDate(), userList, project.getPmId());
+    }
+
+    public void addProjectUserAndMm(int projectId, String beginDate, String endDate, List<String> userList, String pmId) {
+        int beginYear = LocalDate.parse(beginDate).getYear();
+        int endYear = LocalDate.parse(endDate).getYear();
+
+        for(String userId : userList) {
+            projectMapper.addProjectUser(projectId, userId, userId.equals(pmId)?"PM":"");
 
             for(int i = beginYear; i <= endYear; i++) {
-                projectMapper.addProjectMm(projectId, user.getId(), String.valueOf(i), "ACTUAL");
-                projectMapper.addProjectMm(projectId, user.getId(), String.valueOf(i), "EXPECT");
+                projectMapper.addProjectMm(projectId, userId, String.valueOf(i), "ACTUAL");
+                projectMapper.addProjectMm(projectId, userId, String.valueOf(i), "EXPECT");
             }
         }
     }
@@ -51,7 +61,7 @@ public class ProjectService {
         return projectList;
     }
 
-    public ProjectDetail getProjectDetail(String id) {
+    public ProjectDetail getProjectDetail(int id) {
         ProjectDetail detail = projectMapper.findProjectDetail(id);
         detail.setExpectMm(projectMapper.findProjectTotalMm(id, "EXPECT", null));
         detail.setActualMm(projectMapper.findProjectTotalMm(id, "ACTUAL", null));
@@ -64,6 +74,44 @@ public class ProjectService {
         detail.setUserList(userList);
 
         return detail;
+    }
+
+    public void updateProject(ProjectDto project) {
+        projectMapper.updateProject(project);
+
+        /* db에 있는 user와 새로들어온 user를 비교해 처리 */
+        List<String> dbUserList = new ArrayList<>();
+        List<String> newUserList = new ArrayList<>();
+        List<String> addUserList = new ArrayList<>();
+
+        for(ProjectDetail.ProjectUser user : projectMapper.findUserList(project.getId())) {
+            dbUserList.add(user.getId());
+        }
+
+        for(ProjectDto.ProjectUser user : project.getUserList()) {
+            newUserList.add(user.getId());
+        }
+
+        for(String newUser : newUserList) {
+            if(dbUserList.contains(newUser)) {  //update TODO: modify 시간을 업데이트 하려면 PM이 바뀐거에만 적용해야함..
+                projectMapper.updateProjectUser(project.getId(), newUser, newUser.equals(project.getPmId())?"PM":"");
+                continue;
+            }
+            // insert 할 유저를 추가.
+            addUserList.add(newUser);
+        }
+
+        // insert
+        addProjectUserAndMm(project.getId(), project.getBeginDate(), project.getEndDate(), addUserList, project.getPmId());
+
+        for(String dbUser : dbUserList) {
+            if(!newUserList.contains(dbUser)) {
+                projectMapper.deleteProjectMm(project.getId(), dbUser);
+                projectMapper.deleteProjectUser(project.getId(), dbUser);
+            }
+        }
+
+        // TODO : 프로젝트 시작, 종료 시간 변경에 의해 project mm 데이터를 지울 것인지 판단 필요. 남겨도 될 것 같긴함.
     }
 
     /**
@@ -193,5 +241,12 @@ public class ProjectService {
 
         List<ProjectManMonthDto.Project> result = projectIdMap.values().stream().collect(Collectors.toList());
         return result;
+    }
+
+    @Transactional
+    public void deleteProject(int id) {
+        projectMapper.deleteProjectMm(id, null);
+        projectMapper.deleteProjectUser(id, null);
+        projectMapper.deletePrject(id);
     }
 }

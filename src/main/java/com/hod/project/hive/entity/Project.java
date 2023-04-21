@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Project {
-    String id;
+    int id;
     String name;
     String pmId;
     String pmName;
