@@ -145,7 +145,8 @@ values  (0, '프로젝트 하이브', '2023-01-01 00:00:00', '2023-12-31 00:00:0
 -- TB_PROJECT_USER
 insert into tb_project_user (project_id, user_id, role, created_id, created_date, modified_id, modified_date)
 values  (0, 'bongjun', null, 'admin', '2023-04-09 17:56:21', 'admin', '2023-04-09 17:56:23'),
-        (1, '11111111', 'PM', '10000000', NOW(), '10000000', NOW());
+        (1, '11111111', 'PM', '10000000', NOW(), '10000000', NOW()),
+        (1, '22222222', null, '10000000', NOW(), '10000000', NOW());
 
 -- TB_PROJECT_MM
 insert into tb_project_mm (project_id, user_id, project_year, type, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, created_id, created_date, modified_id, modified_date)

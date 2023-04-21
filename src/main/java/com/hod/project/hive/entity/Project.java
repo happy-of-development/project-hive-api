@@ -11,6 +11,6 @@ public class Project {
     String beginDate;
     String endDate;
     String status;
-    String actualMm;
-    String expectMm;
+    Float actualMm;
+    Float expectMm;
 }
