@@ -1,6 +1,6 @@
 create table tb_project
 (
-    id            int         not null comment '프로젝트 아이디'
+    id            int         not null AUTO_INCREMENT comment '프로젝트 아이디'
         primary key,
     name          varchar(50) not null comment '프로젝트 이름',
     begin_date    datetime    not null comment '시작 날짜',
@@ -46,18 +46,18 @@ create table tb_project_mm
     user_id       varchar(8)  not null comment '사용자 아이디',
     project_year  varchar(4)  not null comment '년도',
     type          varchar(10) not null comment '종류 (EXPECT, ACTUAL, REQ_EXPECT, REQ_ACTUAL)',
-    m1            float       null comment '1월',
-    m2            float       null comment '2월',
-    m3            float       null comment '3월',
-    m4            float       null comment '4월',
-    m5            float       null comment '5월',
-    m6            float       null comment '6월',
-    m7            float       null comment '7월',
-    m8            float       null comment '8월',
-    m9            float       null comment '9월',
-    m10           float       null comment '10월',
-    m11           float       null comment '11월',
-    m12           float       null comment '12월',
+    m1            float       null default 0 comment '1월',
+    m2            float       null default 0 comment '2월',
+    m3            float       null default 0 comment '3월',
+    m4            float       null default 0 comment '4월',
+    m5            float       null default 0 comment '5월',
+    m6            float       null default 0 comment '6월',
+    m7            float       null default 0 comment '7월',
+    m8            float       null default 0 comment '8월',
+    m9            float       null default 0 comment '9월',
+    m10           float       null default 0 comment '10월',
+    m11           float       null default 0 comment '11월',
+    m12           float       null default 0 comment '12월',
     created_id    varchar(8)  not null comment '생성 아이디',
     created_date  datetime    not null comment '생성 날짜',
     modified_id   varchar(8)  null comment '수정 아이디',
@@ -140,7 +140,8 @@ values  (0, 'bongjun', 'admin', '2023-04-09 17:57:28', 'admin', '2023-04-09 17:5
 -- TB_PROJECT
 insert into tb_project (id, name, begin_date, end_date, status, created_id, created_date, modified_id, modified_date)
 values  (0, '프로젝트 하이브', '2023-01-01 00:00:00', '2023-12-31 00:00:00', 'INIT', 'admin', '2023-04-09 00:00:00', 'admin', '2023-04-09 17:54:31'),
-        (1, '첫프로젝트', '2023-01-01 00:00:00', '2023-12-31 00:00:00', 'INIT', '10000000', NOW(), '10000000', NOW());
+        (1, '첫프로젝트', '2023-01-01 00:00:00', '2023-12-31 00:00:00', 'INIT', '10000000', NOW(), '10000000', NOW()),
+         (2, '두번째', '2023-01-01 00:00:00', '2023-12-31 00:00:00', 'INIT', '10000000', NOW(), '10000000', NOW());
 
 -- TB_PROJECT_USER
 insert into tb_project_user (project_id, user_id, role, created_id, created_date, modified_id, modified_date)

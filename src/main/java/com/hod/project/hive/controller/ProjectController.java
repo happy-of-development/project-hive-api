@@ -2,6 +2,7 @@ package com.hod.project.hive.controller;
 
 import com.hod.project.hive.common.factory.ApiResponseFactory;
 import com.hod.project.hive.common.vo.ApiResponse;
+import com.hod.project.hive.dto.ProjectDto;
 import com.hod.project.hive.dto.ProjectManMonthDto;
 import com.hod.project.hive.entity.Project;
 import com.hod.project.hive.entity.ProjectDetail;
@@ -9,10 +10,7 @@ import com.hod.project.hive.service.ProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +21,13 @@ import java.util.Map;
 public class ProjectController {
     @Autowired
     ProjectService projectService;
+
+    @PostMapping("/project")
+    public ResponseEntity<ApiResponse> addProject(@RequestBody ProjectDto project) {
+        projectService.addProject(project);
+
+        return ResponseEntity.ok(ApiResponseFactory.create(null));
+    }
 
     @GetMapping("/project")
     public ResponseEntity<ApiResponse> getProject(@RequestParam String beginDate, @RequestParam String endDate, @RequestParam String status) {

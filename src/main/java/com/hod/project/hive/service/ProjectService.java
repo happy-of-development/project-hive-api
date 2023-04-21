@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,28 @@ import java.util.stream.Collectors;
 public class ProjectService {
     @Autowired
     private ProjectMapper projectMapper;
+
+    @Transactional
+    public void addProject(ProjectDto project) {
+        ArrayList<String> yearList = new ArrayList<>();
+
+        int beginYear = LocalDate.parse(project.getBeginDate()).getYear();
+        int endYear = LocalDate.parse(project.getEndDate()).getYear();
+        for(int i = beginYear;i <= endYear; i++) {
+            yearList.add(String.valueOf(i));
+        }
+        projectMapper.addProject(project);
+        int projectId = projectMapper.findLastInsertId();
+
+        for(ProjectDto.ProjectUser user : project.getUserList()) {
+            projectMapper.addProjectUser(projectId, user.getId(), user.getId() == project.getPmId()?"PM":"");
+
+            for(String projectYear : yearList) {
+                projectMapper.addProjectMm(projectId, user.getId(), projectYear, "ACTUAL");
+                projectMapper.addProjectMm(projectId, user.getId(), projectYear, "EXPECT");
+            }
+        }
+    }
 
     public List<Project> getProject(String beginDate, String endDate, String status) {
         List<Project> projectList =  projectMapper.findProject(beginDate, endDate, status);

@@ -169,6 +169,36 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "POST /project",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"추가한 프로젝트\",\n    \"pmId\" : \"11111111\",\n    \"beginDate\" : \"2022-02-02\",\n    \"endDate\" : \"2023-12-12\",\n    \"status\" : \"INIT\",\n    \"userList\" : [\n        {\"id\" : \"11111111\" },\n        {\"id\" : \"22222222\"}\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/project",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

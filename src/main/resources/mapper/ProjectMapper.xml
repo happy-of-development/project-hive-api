@@ -3,6 +3,80 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hod.project.hive.mapper.ProjectMapper">
+    <insert id="addProject" parameterType="com.hod.project.hive.dto.ProjectDto">
+        INSERT INTO tb_project (
+            name,
+            begin_date,
+            end_date,
+            status,
+            created_id,
+            created_date,
+            modified_id,
+            modified_date
+            )
+        VALUES (
+            #{project.name},
+            #{project.beginDate},
+            #{project.endDate},
+            #{project.status},
+            'admin',
+            NOW(),
+            'admin',
+            NOW()
+            )
+
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER" >
+               SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    
+    <select id="findLastInsertId" resultType="Integer">
+        SELECT LAST_INSERT_ID()
+    </select>
+
+    <insert id="addProjectUser" >
+        INSERT INTO tb_project_user (
+            project_id,
+            user_id,
+            role,
+            created_id,
+            created_date,
+            modified_id,
+            modified_date
+            )
+       VALUES (
+            #{id},
+            #{userId},
+            #{role},
+            'admin',
+            NOW(),
+            'admin',
+            NOW()
+            )
+    </insert>
+
+    <insert id="addProjectMm">
+        INSERT INTO tb_project_mm (
+            project_id,
+            user_id,
+            project_year,
+            type,
+            created_id,
+            created_date,
+            modified_id,
+            modified_date
+            )
+        VALUES (
+            #{projectId},
+            #{userId},
+            #{projectYear},
+            #{type},
+            'admin',
+            NOW(),
+            'admin',
+            NOW()
+            )
+    </insert>
 
     <!-- TODO : PARSEDATETIME은 H2 용이며 MySQL로 연동시에는 다른 것으로 변경 필요 -->
     <select id="findProject" parameterType="string" resultType="com.hod.project.hive.entity.Project">
