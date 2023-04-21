@@ -2,8 +2,8 @@ package com.hod.project.hive.service;
 
 import com.hod.project.hive.dto.UserDto;
 import com.hod.project.hive.entity.User;
-import com.hod.project.hive.mapper.UserMapper;
 
+import com.hod.project.hive.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

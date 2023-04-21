@@ -1,9 +1,9 @@
-package com.hod.project.hive.controller;
+package com.hod.project.hive.test.controller;
 
-import com.hod.project.hive.common.vo.RequestParams;
-import com.hod.project.hive.common.vo.ResponseParams;
-import com.hod.project.hive.entity.TestObject;
-import com.hod.project.hive.service.TestService;
+import com.hod.project.hive.test.vo.RequestParams;
+import com.hod.project.hive.test.vo.ResponseParams;
+import com.hod.project.hive.test.entity.TestObject;
+import com.hod.project.hive.test.service.TestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

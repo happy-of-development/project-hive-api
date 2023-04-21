@@ -1,0 +1,21 @@
+### 요청 값이 모두 있는 경우
+GET http://{{ip}}:{{port}}/dashboard/project
+    ?year=2023
+    &id=bongjun
+Content-Type: application/json
+
+### 요청 값이 모두 없는 경우
+GET http://{{ip}}:{{port}}/dashboard/project
+Content-Type: application/json
+
+### ID 요청 값이 없는 경우
+GET http://{{ip}}:{{port}}/dashboard/project
+    ?year=2023
+Content-Type: application/json
+
+### ID 요청 값이 null 경우
+GET http://{{ip}}:{{port}}/dashboard/project
+    ?year=2023
+    &id=null
+Content-Type: application/json
+
