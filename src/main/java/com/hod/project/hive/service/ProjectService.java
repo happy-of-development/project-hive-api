@@ -34,7 +34,7 @@ public class ProjectService {
         for(ProjectDto.ProjectUser user : project.getUserList()) {
             projectMapper.addProjectUser(projectId, user.getId(), user.getId().equals(project.getPmId())?"PM":"");
 
-            for(int i = beginYear; i < endYear; i++) {
+            for(int i = beginYear; i <= endYear; i++) {
                 projectMapper.addProjectMm(projectId, user.getId(), String.valueOf(i), "ACTUAL");
                 projectMapper.addProjectMm(projectId, user.getId(), String.valueOf(i), "EXPECT");
             }
