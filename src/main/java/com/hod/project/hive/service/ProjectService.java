@@ -25,22 +25,18 @@ public class ProjectService {
 
     @Transactional
     public void addProject(ProjectDto project) {
-        ArrayList<String> yearList = new ArrayList<>();
+        projectMapper.addProject(project);
 
+        int projectId = projectMapper.findLastInsertId();
         int beginYear = LocalDate.parse(project.getBeginDate()).getYear();
         int endYear = LocalDate.parse(project.getEndDate()).getYear();
-        for(int i = beginYear;i <= endYear; i++) {
-            yearList.add(String.valueOf(i));
-        }
-        projectMapper.addProject(project);
-        int projectId = projectMapper.findLastInsertId();
 
         for(ProjectDto.ProjectUser user : project.getUserList()) {
-            projectMapper.addProjectUser(projectId, user.getId(), user.getId() == project.getPmId()?"PM":"");
+            projectMapper.addProjectUser(projectId, user.getId(), user.getId().equals(project.getPmId())?"PM":"");
 
-            for(String projectYear : yearList) {
-                projectMapper.addProjectMm(projectId, user.getId(), projectYear, "ACTUAL");
-                projectMapper.addProjectMm(projectId, user.getId(), projectYear, "EXPECT");
+            for(int i = beginYear; i < endYear; i++) {
+                projectMapper.addProjectMm(projectId, user.getId(), String.valueOf(i), "ACTUAL");
+                projectMapper.addProjectMm(projectId, user.getId(), String.valueOf(i), "EXPECT");
             }
         }
     }
