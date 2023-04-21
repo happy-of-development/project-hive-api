@@ -20,12 +20,12 @@
             ON u.id = pu.user_id
         WHERE (
         <![CDATA[(
-        			p.begin_date <= PARSEDATETIME(#{beginDate}, 'yyyyMMdd')
-        			AND p.end_date >= PARSEDATETIME(#{beginDate}, 'yyyyMMdd')
+        			p.begin_date <= PARSEDATETIME(#{beginDate}, 'yyyy-MM-dd')
+        			AND p.end_date >= PARSEDATETIME(#{beginDate}, 'yyyy-MM-dd')
         			)
         		OR (
-        			p.begin_date <= PARSEDATETIME(#{endDate}, 'yyyyMMdd')
-        			AND p.end_date >= PARSEDATETIME(#{endDate}, 'yyyyMMdd')
+        			p.begin_date <= PARSEDATETIME(#{endDate}, 'yyyy-MM-dd')
+        			AND p.end_date >= PARSEDATETIME(#{endDate}, 'yyyy-MM-dd')
         			)
         		)]]>
 
@@ -40,10 +40,42 @@
         FROM tb_project_mm
         WHERE project_id = #{id}
             AND type = #{type}
+
+        <if test="userId != null">
+            AND user_id = #{userId}
+        </if>
 	</select>
 
     <select id="findProjectDetail" resultType="com.hod.project.hive.entity.ProjectDetail">
+        SELECT  p.id id,
+                p.name name,
+                pu.user_id pmId,
+               	u.name pmName,
+               	p.begin_date beginDate,
+               	p.end_date endDate,
+               	p.status status
+        FROM tb_project p
+        JOIN tb_project_user pu
+            ON pu.project_id = p.id AND pu.ROLE = 'PM'
+        JOIN tb_user u
+            ON u.id = pu.user_id
+        WHERE p.id = #{id}
+    </select>
 
+    <select id="findUserList" resultType="com.hod.project.hive.entity.ProjectDetail$ProjectUser">
+        SELECT  pu.user_id id,
+                u.name name,
+                t.name team
+        FROM tb_project p
+        JOIN tb_project_user pu
+            ON pu.project_id = p.id
+        JOIN tb_user u
+            ON u.id = pu.user_id
+        JOIN tb_team_user tu
+            ON tu.user_id = u.id
+        JOIN tb_team t
+            ON t.id = tu.team_id
+        WHERE p.id = #{id}
     </select>
 
 </mapper>

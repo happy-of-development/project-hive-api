@@ -19,8 +19,8 @@ public class ProjectService {
     public List<Project> getProject(String beginDate, String endDate, String status) {
         List<Project> projectList =  projectMapper.findProject(beginDate, endDate, status);
         for(Project project : projectList) {
-           project.setExpectMm(Float.toString(projectMapper.findProjectTotalMm(project.getId(), "EXPECT")));
-           project.setActualMm(Float.toString(projectMapper.findProjectTotalMm(project.getId(), "ACTUAL")));
+           project.setExpectMm(Float.toString(projectMapper.findProjectTotalMm(project.getId(), "EXPECT", null)));
+           project.setActualMm(Float.toString(projectMapper.findProjectTotalMm(project.getId(), "ACTUAL", null)));
         }
 
         return projectList;
@@ -28,6 +28,16 @@ public class ProjectService {
 
     public ProjectDetail getProjectDetail(String id) {
         ProjectDetail detail = projectMapper.findProjectDetail(id);
-        return null;
+        detail.setExpectMm(Float.toString(projectMapper.findProjectTotalMm(id, "EXPECT", null)));
+        detail.setActualMm(Float.toString(projectMapper.findProjectTotalMm(id, "ACTUAL", null)));
+
+        List<ProjectDetail.ProjectUser> userList = projectMapper.findUserList(id);
+        for(ProjectDetail.ProjectUser user : userList) {
+            user.setActualMm(projectMapper.findProjectTotalMm(id, "ACTUAL", user.getId()));
+        }
+
+        detail.setUserList(userList);
+
+        return detail;
     }
 }

@@ -11,9 +11,10 @@ INSERT INTO tb_team_user
     VALUES (1, '11111111', '10000000', NOW(), '10000000', NOW()),
            (1, '22222222', '10000000', NOW(), '10000000', NOW());
 
-INSERT INTO tb_project VALUES (1, '첫프로젝트', PARSEDATETIME('20230101', 'yyyyMMdd'), PARSEDATETIME('20231231','yyyyMMdd'), 'INIT', '10000000', NOW(), '10000000', NOW());
+INSERT INTO tb_project VALUES (1, '첫프로젝트', PARSEDATETIME('2023-01-01', 'yyyy-MM-dd'), PARSEDATETIME('2023-12-31','yyyy-MM-dd'), 'INIT', '10000000', NOW(), '10000000', NOW());
 
 INSERT INTO tb_project_user VALUES (1, '11111111', 'PM', '10000000', NOW(), '10000000', NOW());
+INSERT INTO tb_project_user VALUES (1, '22222222', '', '10000000', NOW(), '10000000', NOW());
 
 INSERT INTO tb_project_mm
     VALUES (1, '11111111', '2023', 'EXPECT', 0.1, 0.2, 0.3, 0.4, 0.1, 0.5, 0.5, 0.5, 0.1, 0.2, 0.3, 0.4, '10000000', NOW(), '10000000', NOW()),
