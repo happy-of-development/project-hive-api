@@ -56,7 +56,7 @@
     </insert>
 
     <insert id="addProjectMm">
-        INSERT INTO tb_project_mm (
+        INSERT IGNORE INTO tb_project_mm (
             project_id,
             user_id,
             project_year,
@@ -172,7 +172,9 @@
 
     <update id="updateProjectUser">
         UPDATE tb_project_user p
-        SET p.role = #{role}
+        SET p.role = #{role},
+            p.modified_id = 'admin',
+            p.modified_date = NOW()
         WHERE
             p.project_id = #{projectId}
             AND p.user_id = #{userId}

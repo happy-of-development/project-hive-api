@@ -34,17 +34,22 @@ public class ProjectService {
             userList.add(user.getId());
         }
 
-        addProjectUserAndMm(projectId, project.getBeginDate(), project.getEndDate(), userList, project.getPmId());
+        addProjectUser(projectId, userList, project.getPmId());
+        addProjectMm(projectId, project.getBeginDate(), project.getEndDate(), userList);
     }
 
-    public void addProjectUserAndMm(int projectId, String beginDate, String endDate, List<String> userList, String pmId) {
+    public void addProjectUser(int projectId, List<String> userList, String pmId) {
+        for(String userId : userList) {
+            projectMapper.addProjectUser(projectId, userId, userId.equals(pmId)?"PM":"");
+        }
+    }
+
+    public void addProjectMm(int projectId, String beginDate, String endDate, List<String> userList) {
         int beginYear = LocalDate.parse(beginDate).getYear();
         int endYear = LocalDate.parse(endDate).getYear();
 
         for(String userId : userList) {
-            projectMapper.addProjectUser(projectId, userId, userId.equals(pmId)?"PM":"");
-
-            for(int i = beginYear; i <= endYear; i++) {
+            for (int i = beginYear; i <= endYear; i++) {
                 projectMapper.addProjectMm(projectId, userId, String.valueOf(i), "ACTUAL");
                 projectMapper.addProjectMm(projectId, userId, String.valueOf(i), "EXPECT");
             }
@@ -82,7 +87,6 @@ public class ProjectService {
         /* db에 있는 user와 새로들어온 user를 비교해 처리 */
         List<String> dbUserList = new ArrayList<>();
         List<String> newUserList = new ArrayList<>();
-        List<String> addUserList = new ArrayList<>();
 
         for(ProjectDetail.ProjectUser user : projectMapper.findUserList(project.getId())) {
             dbUserList.add(user.getId());
@@ -92,26 +96,28 @@ public class ProjectService {
             newUserList.add(user.getId());
         }
 
-        for(String newUser : newUserList) {
-            if(dbUserList.contains(newUser)) {  //update TODO: modify 시간을 업데이트 하려면 PM이 바뀐거에만 적용해야함..
-                projectMapper.updateProjectUser(project.getId(), newUser, newUser.equals(project.getPmId())?"PM":"");
-                continue;
-            }
-            // insert 할 유저를 추가.
-            addUserList.add(newUser);
+        // insert user
+        List<String> insertUserList = newUserList.stream().filter(element -> !dbUserList.contains(element)).collect(Collectors.toList());
+        addProjectUser(project.getId(), insertUserList, ""); // 아래에서 PM 업데이트가 필요하면 처리함.
+        addProjectMm(project.getId(), project.getBeginDate(), project.getEndDate(), insertUserList);
+
+        // delete user
+        List<String> deleteUserList = dbUserList.stream()
+                .filter(element -> !newUserList.contains(element)).collect(Collectors.toList());
+        for(String deleteUser : deleteUserList) {
+            projectMapper.deleteProjectMm(project.getId(), deleteUser);
+            projectMapper.deleteProjectUser(project.getId(), deleteUser);
+         }
+
+        // update user PM이 바뀐 경우만 적용.
+        ProjectDetail detail = projectMapper.findProjectDetail(project.getId());
+        if(detail.getPmId().equals(project.getPmId())) {
+            projectMapper.updateProjectUser(project.getId(), detail.getPmId(), "");
+            projectMapper.updateProjectUser(project.getId(), project.getPmId(), "PM");
         }
 
-        // insert
-        addProjectUserAndMm(project.getId(), project.getBeginDate(), project.getEndDate(), addUserList, project.getPmId());
-
-        for(String dbUser : dbUserList) {
-            if(!newUserList.contains(dbUser)) {
-                projectMapper.deleteProjectMm(project.getId(), dbUser);
-                projectMapper.deleteProjectUser(project.getId(), dbUser);
-            }
-        }
-
-        // TODO : 프로젝트 시작, 종료 시간 변경에 의해 project mm 데이터를 지울 것인지 판단 필요. 남겨도 될 것 같긴함.
+        newUserList.retainAll(dbUserList);
+        addProjectMm(project.getId(), project.getBeginDate(), project.getEndDate(), newUserList);
     }
 
     /**

@@ -186,7 +186,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\" : \"추가한 프로젝트\",\n    \"pmId\" : \"11111111\",\n    \"beginDate\" : \"2022-02-02\",\n    \"endDate\" : \"2023-12-12\",\n    \"status\" : \"INIT\",\n    \"userList\" : [\n        {\"id\" : \"11111111\" },\n        {\"id\" : \"22222222\"}\n    ]\n}"
+							"raw": "{\n    \"name\" : \"추가한 프로젝트\",\n    \"pmId\" : \"11111111\",\n    \"beginDate\" : \"2023-02-02\",\n    \"endDate\" : \"2023-12-12\",\n    \"status\" : \"INIT\",\n    \"userList\" : [\n        {\"id\" : \"11111111\" }\n    ]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/project",
@@ -216,7 +216,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\" : \"3\",\n    \"name\" : \"추가하고 바꾼 프로젝트\",\n    \"pmId\" : \"11111111\",\n    \"beginDate\" : \"2023-02-02\",\n    \"endDate\" : \"2023-12-12\",\n    \"status\" : \"INIT\",\n    \"userList\" : [\n        {\"id\" : \"11111111\" },\n        {\"id\" : \"22222222\" }\n    ]\n}"
+							"raw": "{\n    \"id\" : \"3\",\n    \"name\" : \"추가하고 바꾼 프로젝트\",\n    \"pmId\" : \"22222222\",\n    \"beginDate\" : \"2022-02-02\",\n    \"endDate\" : \"2023-12-12\",\n    \"status\" : \"INIT\",\n    \"userList\" : [\n        {\"id\" : \"11111111\" },\n         {\"id\" : \"22222222\" }\n    ]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/project",
