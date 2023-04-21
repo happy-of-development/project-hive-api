@@ -12,7 +12,7 @@ public class ApiResponseFactory {
     }
 
     public static ApiResponse<Object> createError(String result, String reason) {
-        ApiResponse<Object> response = new ApiResponse<Object>();
+        ApiResponse<Object> response = new ApiResponse<>();
         response.setResult(result);
         response.setReason(reason);
 

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Data
-public class DashboardProjectPersonalDto {
+public class DashboardProjectPersonalResponse {
 
     private String year;
     private Float expectTotalMm;

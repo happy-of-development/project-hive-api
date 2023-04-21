@@ -3,6 +3,32 @@ GET http://{{ip}}:{{port}}/project/mm
     ?year=2023
 Content-Type: application/json
 
-### 요청 값이 모두 없는 경우
-GET http://{{ip}}:{{port}}/dashboard/project
+
+### mm 업데이트
+PUT http://{{ip}}:{{port}}/project/mm
 Content-Type: application/json
+
+{
+  "projectId": 0,
+  "userId": "bongjun",
+  "year": "2023",
+  "mmList": [
+    {
+      "type": "ACTUAL",
+      "mm": [
+        null,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0,
+        0,
+        0,
+        0,
+        null,
+        null
+      ]
+    }
+  ]
+}
