@@ -1,7 +1,7 @@
 ### 요청 값이 모두 있는 경우
 GET http://{{ip}}:{{port}}/dashboard/project
     ?year=2023
-    &id=1
+    &id=bongjun
 Content-Type: application/json
 
 ### 요청 값이 모두 없는 경우

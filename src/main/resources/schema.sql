@@ -121,36 +121,36 @@ create table tb_team_user
 
 -- TB_USER
 insert into tb_user (id, name, password, del_yn, email, mobile, photo, created_id, created_date, modified_id, modified_date)
-values  ('0', '관리자', 'password', 'N', 'admin@gamil.com', '01094971093', null, '0', '2023-04-09 15:42:57', '0', '2023-04-09 15:43:11'),
-        ('1', '백봉준', 'password', 'N', 'bongjun.baek@gmail.com', '01094971093', null, '0', '2023-04-09 15:43:00', '0', '2023-04-09 15:43:14'),
+values  ('admin', '관리자', 'password', 'N', 'admin@gamil.com', '01094971093', null, 'admin', '2023-04-09 15:42:57', 'admin', '2023-04-09 15:43:11'),
+        ('bongjun', '백봉준', 'password', 'N', 'bongjun.baek@gmail.com', '01094971093', null, 'admin', '2023-04-09 15:43:00', 'admin', '2023-04-09 15:43:14'),
         ('11111111', '1번사용자', 'abcdef1234', 'N', 'hod@gmail.com', '01010002000', null, '10000000', NOW(), '10000000', NOW()),
         ('22222222', '2번사용자', 'abcdef1234', 'N', 'hod@gmail.com', '01010002000', null, '10000000', NOW(), '10000000', NOW()),
         ('10000000', 'admin', 'abcdef1234', 'N', 'admin@gmail.com', '01010002000', null, '10000000', NOW(), '10000000', NOW());
 -- TB_TAEM
 insert into tb_team (id, name, description, created_id, created_date, modified_id, modified_date)
-values  (0, '개발1팀', '우리에겐 실패란 없다!', '0', '2023-04-09 15:34:02', '0', '2023-04-09 15:34:09'),
+values  (0, '개발1팀', '우리에겐 실패란 없다!', 'admin', '2023-04-09 15:34:02', 'admin', '2023-04-09 15:34:09'),
         (1, '개발팀', '개발팀 입니다.', '10000000', NOW(), '10000000', NOW());
 
 -- TB_TEAM_USER
 insert into tb_team_user (team_id, user_id, created_id, created_date, modified_id, modified_date)
-values  (0, '1', '0', '2023-04-09 17:57:28', '0', '2023-04-09 17:57:33'),
+values  (0, 'bongjun', 'admin', '2023-04-09 17:57:28', 'admin', '2023-04-09 17:57:33'),
         (1, '11111111', '10000000', NOW(), '10000000', NOW()),
         (1, '22222222', '10000000', NOW(), '10000000', NOW());
 
 -- TB_PROJECT
 insert into tb_project (id, name, begin_date, end_date, status, created_id, created_date, modified_id, modified_date)
-values  (0, '프로젝트 하이브', '2023-01-01 00:00:00', '2023-12-31 00:00:00', 'INIT', '0', '2023-04-09 00:00:00', '0', '2023-04-09 17:54:31'),
+values  (0, '프로젝트 하이브', '2023-01-01 00:00:00', '2023-12-31 00:00:00', 'INIT', 'admin', '2023-04-09 00:00:00', 'admin', '2023-04-09 17:54:31'),
         (1, '첫프로젝트', '2023-01-01 00:00:00', '2023-12-31 00:00:00', 'INIT', '10000000', NOW(), '10000000', NOW());
 
 -- TB_PROJECT_USER
 insert into tb_project_user (project_id, user_id, role, created_id, created_date, modified_id, modified_date)
-values  (0, '1', null, '0', '2023-04-09 17:56:21', '0', '2023-04-09 17:56:23'),
+values  (0, 'bongjun', null, 'admin', '2023-04-09 17:56:21', 'admin', '2023-04-09 17:56:23'),
         (1, '11111111', 'PM', '10000000', NOW(), '10000000', NOW());
 
 -- TB_PROJECT_MM
 insert into tb_project_mm (project_id, user_id, project_year, type, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, created_id, created_date, modified_id, modified_date)
-values  (0, '1', '2023', 'ACTUAL', 1, 1, 1, 1, 1, 1, 0, 0, null, null, null, null, '0', '2023-04-09 18:17:21', '0', '2023-04-09 18:17:23'),
-        (0, '1', '2023', 'EXPECT', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, '0', '2023-04-09 18:17:21', '0', '2023-04-09 18:17:23'),
+values  (0, 'bongjun', '2023', 'ACTUAL', 1, 1, 1, 1, 1, 1, 0, 0, null, null, null, null, 'admin', '2023-04-09 18:17:21', 'admin', '2023-04-09 18:17:23'),
+        (0, 'bongjun', '2023', 'EXPECT', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 'admin', '2023-04-09 18:17:21', 'admin', '2023-04-09 18:17:23'),
         (1, '11111111', '2023', 'EXPECT', 0.1, 0.2, 0.3, 0.4, 0.1, 0.5, 0.5, 0.5, 0.1, 0.2, 0.3, 0.4, '10000000', NOW(), '10000000', NOW()),
         (1, '11111111', '2023', 'ACTUAL', 0.4, 0.1, 0.5, 0.5, 0.5, 0.1, 0.2, 0.3, 0.1, 0.2, 0.3, 0.4, '10000000', NOW(), '10000000', NOW()),
         (1, '22222222', '2023', 'EXPECT', 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, '10000000', NOW(), '10000000', NOW()),
