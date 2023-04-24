@@ -256,11 +256,12 @@ public class ProjectService {
         if (count == 0) {
             // TODO: 업데이트 행 수 반환, 0 이면 실패 처리
         }
+    }
 
     @Transactional
     public void deleteProject(int id) {
         projectMapper.deleteProjectMm(id, null);
         projectMapper.deleteProjectUser(id, null);
-        projectMapper.deletePrject(id);
+        projectMapper.deleteProject(id);
     }
 }

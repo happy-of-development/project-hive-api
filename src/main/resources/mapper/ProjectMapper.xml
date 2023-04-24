@@ -242,7 +242,7 @@
         </foreach>
     </update>
 
-    <delete id="deletePrject">
+    <delete id="deleteProject">
         DELETE
         FROM tb_project
         WHERE id = #{projectId}

@@ -23,7 +23,7 @@ public interface ProjectMapper {
     List<ProjectManMonth> findProjectManMonth(@Param("projectYear") String projectYear, @Param("userId") String userId);
     int updateProjectManMonth(@Param("list") List<ProjectManMonth> list);
     List<ProjectDetail.ProjectUser> findUserList(@Param("projectId") int projectId);
-    void deletePrject(@Param("projectId") int projectId);
+    void deleteProject(@Param("projectId") int projectId);
     void deleteProjectUser(@Param("projectId") int projectId, @Param("userId") String userId);
     void deleteProjectMm(@Param("projectId") int projectId, @Param("userId") String userId);
 }
