@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,19 +23,101 @@ public class ProjectService {
     @Autowired
     private ProjectMapper projectMapper;
 
+    @Transactional
+    public void addProject(ProjectDto project) {
+        projectMapper.addProject(project);
+
+        int projectId = projectMapper.findLastInsertId();
+
+        List<String> userList = new ArrayList<>();
+        for(ProjectDto.ProjectUser user : project.getUserList()) {
+            userList.add(user.getId());
+        }
+
+        addProjectUser(projectId, userList, project.getPmId());
+        addProjectMm(projectId, project.getBeginDate(), project.getEndDate(), userList);
+    }
+
+    public void addProjectUser(int projectId, List<String> userList, String pmId) {
+        for(String userId : userList) {
+            projectMapper.addProjectUser(projectId, userId, userId.equals(pmId)?"PM":"");
+        }
+    }
+
+    public void addProjectMm(int projectId, String beginDate, String endDate, List<String> userList) {
+        int beginYear = LocalDate.parse(beginDate).getYear();
+        int endYear = LocalDate.parse(endDate).getYear();
+
+        for(String userId : userList) {
+            for (int i = beginYear; i <= endYear; i++) {
+                projectMapper.addProjectMm(projectId, userId, String.valueOf(i), "ACTUAL");
+                projectMapper.addProjectMm(projectId, userId, String.valueOf(i), "EXPECT");
+            }
+        }
+    }
+
     public List<Project> getProject(String beginDate, String endDate, String status) {
         List<Project> projectList =  projectMapper.findProject(beginDate, endDate, status);
         for(Project project : projectList) {
-           project.setExpectMm(Float.toString(projectMapper.findProjectTotalMm(project.getId(), "EXPECT")));
-           project.setActualMm(Float.toString(projectMapper.findProjectTotalMm(project.getId(), "ACTUAL")));
+           project.setExpectMm(projectMapper.findProjectTotalMm(project.getId(), "EXPECT", null));
+           project.setActualMm(projectMapper.findProjectTotalMm(project.getId(), "ACTUAL", null));
         }
 
         return projectList;
     }
 
-    public ProjectDetail getProjectDetail(String id) {
+    public ProjectDetail getProjectDetail(int id) {
         ProjectDetail detail = projectMapper.findProjectDetail(id);
-        return null;
+        detail.setExpectMm(projectMapper.findProjectTotalMm(id, "EXPECT", null));
+        detail.setActualMm(projectMapper.findProjectTotalMm(id, "ACTUAL", null));
+
+        List<ProjectDetail.ProjectUser> userList = projectMapper.findUserList(id);
+        for(ProjectDetail.ProjectUser user : userList) {
+            user.setActualMm(projectMapper.findProjectTotalMm(id, "ACTUAL", user.getId()));
+        }
+
+        detail.setUserList(userList);
+
+        return detail;
+    }
+
+    public void updateProject(ProjectDto project) {
+        projectMapper.updateProject(project);
+
+        /* db에 있는 user와 새로들어온 user를 비교해 처리 */
+        List<String> dbUserList = new ArrayList<>();
+        List<String> newUserList = new ArrayList<>();
+
+        for(ProjectDetail.ProjectUser user : projectMapper.findUserList(project.getId())) {
+            dbUserList.add(user.getId());
+        }
+
+        for(ProjectDto.ProjectUser user : project.getUserList()) {
+            newUserList.add(user.getId());
+        }
+
+        // insert user
+        List<String> insertUserList = newUserList.stream().filter(element -> !dbUserList.contains(element)).collect(Collectors.toList());
+        addProjectUser(project.getId(), insertUserList, ""); // 아래에서 PM 업데이트가 필요하면 처리함.
+        addProjectMm(project.getId(), project.getBeginDate(), project.getEndDate(), insertUserList);
+
+        // delete user
+        List<String> deleteUserList = dbUserList.stream()
+                .filter(element -> !newUserList.contains(element)).collect(Collectors.toList());
+        for(String deleteUser : deleteUserList) {
+            projectMapper.deleteProjectMm(project.getId(), deleteUser);
+            projectMapper.deleteProjectUser(project.getId(), deleteUser);
+         }
+
+        // update user PM이 바뀐 경우만 적용.
+        ProjectDetail detail = projectMapper.findProjectDetail(project.getId());
+        if(detail.getPmId().equals(project.getPmId())) {
+            projectMapper.updateProjectUser(project.getId(), detail.getPmId(), "");
+            projectMapper.updateProjectUser(project.getId(), project.getPmId(), "PM");
+        }
+
+        newUserList.retainAll(dbUserList);
+        addProjectMm(project.getId(), project.getBeginDate(), project.getEndDate(), newUserList);
     }
 
     /**
@@ -166,11 +249,18 @@ public class ProjectService {
         return result;
     }
 
+
     public void updateProjectManMonth(ProjectManMonthRequest request) {
         List<ProjectManMonth> list = request.toProjectManMonthList();
         int count = projectMapper.updateProjectManMonth(list);
         if (count == 0) {
             // TODO: 업데이트 행 수 반환, 0 이면 실패 처리
         }
+
+    @Transactional
+    public void deleteProject(int id) {
+        projectMapper.deleteProjectMm(id, null);
+        projectMapper.deleteProjectUser(id, null);
+        projectMapper.deletePrject(id);
     }
 }

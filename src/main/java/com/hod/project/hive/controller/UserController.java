@@ -18,7 +18,6 @@ public class UserController {
 
     @PostMapping("/user")
     public ResponseEntity<ApiResponse> addUser(@RequestBody UserDto user) {
-        System.out.println("addUser : " + user.getId());
         userService.addUser(user);
 
         return ResponseEntity.ok(ApiResponseFactory.create(null));

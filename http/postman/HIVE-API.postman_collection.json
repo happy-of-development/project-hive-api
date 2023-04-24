@@ -33,24 +33,6 @@
 					"response": []
 				},
 				{
-					"name": "DELETE /user",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/user/11111111",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"user",
-								"11111111"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "POST /user",
 					"protocolProfileBehavior": {
 						"disabledSystemHeaders": {}
@@ -66,7 +48,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\" : \"11111111\",\n    \"name\" : \"바뀐이름\",\n    \"password\" : \"112233\",\n    \"mobile\" : \"01022223333\"\n}"
+							"raw": "{\n    \"id\" : \"2222\",\n    \"name\" : \"추가된 이름\",\n    \"password\" : \"112233\",\n    \"mobile\" : \"01022223333\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/user",
@@ -96,9 +78,8 @@
 						],
 						"body": {
 							"mode": "raw",
-
 							"raw": "{\n    \"id\" : \"11111111\",\n    \"name\" : \"바뀐이름\",\n    \"password\" : \"112233\",\n    \"mobile\" : \"01022223333\"\n}"
-					},
+						},
 						"url": {
 							"raw": "{{base_url}}/user",
 							"host": [
@@ -106,6 +87,24 @@
 							],
 							"path": [
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/user/11111111",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"11111111"
 							]
 						}
 					},
@@ -122,7 +121,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/project?beginDate=221101&endDate=221231&status=INIT",
+							"raw": "{{base_url}}/project?beginDate=2023-02-01&endDate=2024-12-31&status=ALL",
 							"host": [
 								"{{base_url}}"
 							],
@@ -132,16 +131,118 @@
 							"query": [
 								{
 									"key": "beginDate",
-									"value": "221101"
+									"value": "2023-02-01"
 								},
 								{
 									"key": "endDate",
-									"value": "221231"
+									"value": "2024-12-31"
 								},
 								{
 									"key": "status",
-									"value": "INIT"
+									"value": "ALL"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /project/detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/project/detail?id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"project",
+								"detail"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /project",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"추가한 프로젝트\",\n    \"pmId\" : \"11111111\",\n    \"beginDate\" : \"2023-02-02\",\n    \"endDate\" : \"2023-12-12\",\n    \"status\" : \"INIT\",\n    \"userList\" : [\n        {\"id\" : \"11111111\" }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/project",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /project",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\" : \"3\",\n    \"name\" : \"추가하고 바꾼 프로젝트\",\n    \"pmId\" : \"22222222\",\n    \"beginDate\" : \"2022-02-02\",\n    \"endDate\" : \"2023-12-12\",\n    \"status\" : \"INIT\",\n    \"userList\" : [\n        {\"id\" : \"11111111\" },\n         {\"id\" : \"22222222\" }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/project",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/project/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"project",
+								"3"
 							]
 						}
 					},

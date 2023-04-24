@@ -3,6 +3,80 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hod.project.hive.mapper.ProjectMapper">
+    <insert id="addProject" parameterType="com.hod.project.hive.dto.ProjectDto">
+        INSERT INTO tb_project (
+            name,
+            begin_date,
+            end_date,
+            status,
+            created_id,
+            created_date,
+            modified_id,
+            modified_date
+            )
+        VALUES (
+            #{project.name},
+            #{project.beginDate},
+            #{project.endDate},
+            #{project.status},
+            'admin',
+            NOW(),
+            'admin',
+            NOW()
+            )
+
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER" >
+               SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findLastInsertId" resultType="Integer">
+        SELECT LAST_INSERT_ID()
+    </select>
+
+    <insert id="addProjectUser" >
+        INSERT INTO tb_project_user (
+            project_id,
+            user_id,
+            role,
+            created_id,
+            created_date,
+            modified_id,
+            modified_date
+            )
+       VALUES (
+            #{projectId},
+            #{userId},
+            #{role},
+            'admin',
+            NOW(),
+            'admin',
+            NOW()
+            )
+    </insert>
+
+    <insert id="addProjectMm">
+        INSERT IGNORE INTO tb_project_mm (
+            project_id,
+            user_id,
+            project_year,
+            type,
+            created_id,
+            created_date,
+            modified_id,
+            modified_date
+            )
+        VALUES (
+            #{projectId},
+            #{userId},
+            #{projectYear},
+            #{type},
+            'admin',
+            NOW(),
+            'admin',
+            NOW()
+            )
+    </insert>
 
     <!-- TODO : PARSEDATETIME은 H2 용이며 MySQL로 연동시에는 다른 것으로 변경 필요 -->
     <select id="findProject" parameterType="string" resultType="com.hod.project.hive.entity.Project">
@@ -14,20 +88,25 @@
         	p.end_date endDate,
         	p.status status
         FROM tb_project p
-        JOIN tb_project_user pu
+        LEFT JOIN tb_project_user pu
             ON pu.project_id = p.id AND pu.ROLE = 'PM'
-        JOIN tb_user u
+        LEFT JOIN tb_user u
             ON u.id = pu.user_id
-        WHERE (
+        WHERE
+        <!-- 1. 조회 시작 시간이 프로젝트 사이에 있을때. 2. 조회 종료 시간이 프로젝트 사이에 있을때 3. 조회 시작 시간이 프로젝트 시간보다 이전이고 조희 끝 시간이 프로젝트 종료 이후 시간일때 -->
         <![CDATA[(
-        			p.begin_date <= PARSEDATETIME(#{beginDate}, 'yyyyMMdd')
-        			AND p.end_date >= PARSEDATETIME(#{beginDate}, 'yyyyMMdd')
+        			p.begin_date <= PARSEDATETIME(#{beginDate}, 'yyyy-MM-dd')
+        			AND p.end_date >= PARSEDATETIME(#{beginDate}, 'yyyy-MM-dd')
         			)
         		OR (
-        			p.begin_date <= PARSEDATETIME(#{endDate}, 'yyyyMMdd')
-        			AND p.end_date >= PARSEDATETIME(#{endDate}, 'yyyyMMdd')
+        			p.begin_date <= PARSEDATETIME(#{endDate}, 'yyyy-MM-dd')
+        			AND p.end_date >= PARSEDATETIME(#{endDate}, 'yyyy-MM-dd')
         			)
-        		)]]>
+        		OR (
+        		    p.begin_date >= PARSEDATETIME(#{beginDate}, 'yyyy-MM-dd')
+                    AND p.end_date <= PARSEDATETIME(#{endDate}, 'yyyy-MM-dd')
+                    )
+        		]]>
 
         <if test="status != 'ALL'">
             AND p.status = #{status}
@@ -35,43 +114,98 @@
     </select>
 
 	<select id="findProjectTotalMm" resultType="java.lang.Float">
-		SELECT SUM(m1) + SUM(m2) + SUM(m3) + SUM(m4) + SUM(m5) + SUM(m6)
-            + SUM(m7) + SUM(m8) + SUM(m9) + SUM(m10) + SUM(m11) + SUM(m12)
+        SELECT  IFNULL(SUM(IFNULL(m1, 0) + IFNULL(m2, 0) + IFNULL(m3, 0) + IFNULL(m4, 0)
+                + IFNULL(m5, 0) + IFNULL(m6, 0) + IFNULL(m7, 0) + IFNULL(m8, 0)
+                + IFNULL(m9, 0) + IFNULL(m10, 0) + IFNULL(m11, 0) + IFNULL(m12, 0)), 0)
         FROM tb_project_mm
-        WHERE project_id = #{id}
+        WHERE project_id = #{projectId}
             AND type = #{type}
+
+        <if test="userId != null">
+            AND user_id = #{userId}
+        </if>
 	</select>
 
     <select id="findProjectDetail" resultType="com.hod.project.hive.entity.ProjectDetail">
-
+        SELECT  p.id id,
+                p.name name,
+                pu.user_id pmId,
+               	u.name pmName,
+               	p.begin_date beginDate,
+               	p.end_date endDate,
+               	p.status status
+        FROM tb_project p
+        LEFT JOIN tb_project_user pu
+            ON pu.project_id = p.id AND pu.ROLE = 'PM'
+        LEFT JOIN tb_user u
+            ON u.id = pu.user_id
+        WHERE p.id = #{projectId}
     </select>
+
+    <select id="findUserList" resultType="com.hod.project.hive.entity.ProjectDetail$ProjectUser">
+        SELECT  pu.user_id id,
+                u.name name,
+                t.name team
+        FROM tb_project p
+        JOIN tb_project_user pu
+            ON pu.project_id = p.id
+        JOIN tb_user u
+            ON u.id = pu.user_id
+        JOIN tb_team_user tu
+            ON tu.user_id = u.id
+        JOIN tb_team t
+            ON t.id = tu.team_id
+        WHERE p.id = #{projectId}
+    </select>
+
+    <update id="updateProject">
+        UPDATE tb_project p
+        SET p.name = #{project.name},
+            p.begin_date = #{project.beginDate},
+            p.end_date =  #{project.endDate},
+            p.status = #{project.status},
+            p.modified_id = 'admin',
+            p.modified_date = NOW()
+        WHERE
+            p.id = #{project.id}
+    </update>
+
+    <update id="updateProjectUser">
+        UPDATE tb_project_user p
+        SET p.role = #{role},
+            p.modified_id = 'admin',
+            p.modified_date = NOW()
+        WHERE
+            p.project_id = #{projectId}
+            AND p.user_id = #{userId}
+    </update>
 
     <select id="findProjectManMonth" resultType="com.hod.project.hive.entity.ProjectManMonth">
         SELECT
-        U.id            AS user_id,
-        U.name          AS user_name,
-        P.id            AS project_id,
-        P.name          AS project_name,
-        M.project_year  AS project_year,
-        P.begin_date    AS begin_date,
-        P.end_date      AS end_date,
-        M.type          AS type,
-        M.m1,
-        M.m2,
-        M.m3,
-        M.m4,
-        M.m5,
-        M.m6,
-        M.m7,
-        M.m8,
-        M.m9,
-        M.m10,
-        M.m11,
-        M.m12,
-        M.created_id,
-        M.created_date,
-        M.modified_id,
-        M.modified_date
+            U.id            AS user_id,
+            U.name          AS user_name,
+            P.id            AS project_id,
+            P.name          AS project_name,
+            M.project_year  AS project_year,
+            P.begin_date    AS begin_date,
+            P.end_date      AS end_date,
+            M.type          AS type,
+            M.m1,
+            M.m2,
+            M.m3,
+            M.m4,
+            M.m5,
+            M.m6,
+            M.m7,
+            M.m8,
+            M.m9,
+            M.m10,
+            M.m11,
+            M.m12,
+            M.created_id,
+            M.created_date,
+            M.modified_id,
+            M.modified_date
         FROM tb_project_mm  AS M
         JOIN tb_project     AS P ON M.project_id = P.id
         JOIN tb_user        AS U ON M.user_id = U.id
@@ -108,4 +242,29 @@
         </foreach>
     </update>
 
+    <delete id="deletePrject">
+        DELETE
+        FROM tb_project
+        WHERE id = #{projectId}
+    </delete>
+
+    <delete id="deleteProjectUser">
+        DELETE
+        FROM tb_project_user
+        WHERE project_id = #{projectId}
+
+        <if test="userId != null">
+             AND user_id = #{userId}
+         </if>
+    </delete>
+
+    <delete id="deleteProjectMm">
+        DELETE
+        FROM tb_project_mm
+        WHERE project_id = #{projectId}
+
+        <if test="userId != null">
+             AND user_id = #{userId}
+         </if>
+    </delete>
 </mapper>
