@@ -2,8 +2,10 @@ package com.hod.project.hive.controller;
 
 import com.hod.project.hive.common.factory.ApiResponseFactory;
 import com.hod.project.hive.common.vo.ApiResponse;
-import com.hod.project.hive.dto.ProjectDto;
-import com.hod.project.hive.dto.ProjectManMonthDto;
+
+import com.hod.project.hive.dto.ProjectManMonthResponse;
+import com.hod.project.hive.dto.ProjectManMonthRequest;
+
 import com.hod.project.hive.entity.Project;
 import com.hod.project.hive.entity.ProjectDetail;
 import com.hod.project.hive.service.ProjectService;
@@ -54,8 +56,14 @@ public class ProjectController {
 
     @GetMapping("/project/mm")
     public ResponseEntity<ApiResponse> getProjectManMonth(@RequestParam String year) {
-        ProjectManMonthDto dto = projectService.getProjectManMonth(year);
-        return ResponseEntity.ok(ApiResponseFactory.create(dto));
+        ProjectManMonthResponse response = projectService.getProjectManMonth(year);
+        return ResponseEntity.ok(ApiResponseFactory.create(response));
+    }
+
+    @PutMapping("/project/mm")
+    public ResponseEntity<ApiResponse> putProjectManMonth(@RequestBody ProjectManMonthRequest request) {
+        projectService.updateProjectManMonth(request);
+        return ResponseEntity.ok(ApiResponseFactory.create(null));
     }
 
     @DeleteMapping("/project/{id}")

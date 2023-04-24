@@ -21,6 +21,7 @@ public interface ProjectMapper {
     void updateProject(@Param("project") ProjectDto project);
     void updateProjectUser(@Param("projectId") int projectId, @Param("userId") String userId, @Param("role") String role);
     List<ProjectManMonth> findProjectManMonth(@Param("projectYear") String projectYear, @Param("userId") String userId);
+    int updateProjectManMonth(@Param("list") List<ProjectManMonth> list);
     List<ProjectDetail.ProjectUser> findUserList(@Param("projectId") int projectId);
     void deletePrject(@Param("projectId") int projectId);
     void deleteProjectUser(@Param("projectId") int projectId, @Param("userId") String userId);
