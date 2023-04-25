@@ -1,12 +1,12 @@
-package com.hod.project.hive.entity;
+package com.hod.project.hive.dto;
 
 import lombok.Data;
 
 @Data
-public class User {
+public class UserRequest {
     String id;
     String name;
-    String teamName;
+    String password;
     String photo;
     String mobile;
     String email;

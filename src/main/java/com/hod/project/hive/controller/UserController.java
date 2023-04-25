@@ -2,8 +2,8 @@ package com.hod.project.hive.controller;
 
 import com.hod.project.hive.common.factory.ApiResponseFactory;
 import com.hod.project.hive.common.vo.ApiResponse;
-import com.hod.project.hive.dto.UserDto;
-import com.hod.project.hive.entity.User;
+import com.hod.project.hive.dto.UserRequest;
+import com.hod.project.hive.dto.UserResponse;
 import com.hod.project.hive.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,25 +17,25 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/user")
-    public ResponseEntity<ApiResponse> addUser(@RequestBody UserDto user) {
-        userService.addUser(user);
+    public ResponseEntity<ApiResponse> addUser(@RequestBody UserRequest request) {
+        userService.addUser(request);
 
         return ResponseEntity.ok(ApiResponseFactory.create(null));
     }
 
     @GetMapping("/user")
     public ResponseEntity<ApiResponse> getUser(@RequestParam String id) {
-        User user = userService.getUser(id);
-        if(user == null) {
+        UserResponse response = userService.getUser(id);
+        if(response == null) {
             return ResponseEntity.ok(ApiResponseFactory.createError("404", "사용자 정보가 없습니다."));
         }
 
-        return ResponseEntity.ok(ApiResponseFactory.create(user));
+        return ResponseEntity.ok(ApiResponseFactory.create(response));
     }
 
     @PutMapping("/user")
-    public ResponseEntity<ApiResponse>  updateUser(@RequestBody UserDto user) {
-        userService.updateUser(user);
+    public ResponseEntity<ApiResponse>  updateUser(@RequestBody UserRequest request) {
+        userService.updateUser(request);
 
         return ResponseEntity.ok(ApiResponseFactory.create(null));
     }

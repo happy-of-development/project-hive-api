@@ -3,12 +3,13 @@ package com.hod.project.hive.controller;
 import com.hod.project.hive.common.factory.ApiResponseFactory;
 import com.hod.project.hive.common.vo.ApiResponse;
 
-import com.hod.project.hive.dto.ProjectDto;
+import com.hod.project.hive.dto.ProjectRequest;
+
 import com.hod.project.hive.dto.ProjectManMonthResponse;
 import com.hod.project.hive.dto.ProjectManMonthRequest;
 
 import com.hod.project.hive.entity.Project;
-import com.hod.project.hive.entity.ProjectDetail;
+import com.hod.project.hive.dto.ProjectDetailResponse;
 import com.hod.project.hive.service.ProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class ProjectController {
     ProjectService projectService;
 
     @PostMapping("/project")
-    public ResponseEntity<ApiResponse> addProject(@RequestBody ProjectDto project) {
-        projectService.addProject(project);
+    public ResponseEntity<ApiResponse> addProject(@RequestBody ProjectRequest request) {
+        projectService.addProject(request);
 
         return ResponseEntity.ok(ApiResponseFactory.create(null));
     }
@@ -43,14 +44,14 @@ public class ProjectController {
 
     @GetMapping("/project/detail")
     public ResponseEntity<ApiResponse> getProjectDetail(@RequestParam int id) {
-       ProjectDetail detail = projectService.getProjectDetail(id);
+       ProjectDetailResponse response = projectService.getProjectDetail(id);
 
-       return ResponseEntity.ok(ApiResponseFactory.create(detail));
+       return ResponseEntity.ok(ApiResponseFactory.create(response));
     }
 
     @PutMapping("/project")
-    public ResponseEntity<ApiResponse> updateProject(@RequestBody ProjectDto project) {
-       projectService.updateProject(project);
+    public ResponseEntity<ApiResponse> updateProject(@RequestBody ProjectRequest request) {
+       projectService.updateProject(request);
 
        return ResponseEntity.ok(ApiResponseFactory.create(null));
     }

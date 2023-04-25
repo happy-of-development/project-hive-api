@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ProjectDto {
+public class ProjectRequest {
     int id;
     String name;
     String pmId;
