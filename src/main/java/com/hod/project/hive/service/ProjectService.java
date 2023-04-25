@@ -4,7 +4,7 @@ import com.hod.project.hive.common.dto.ManMonthDto;
 import com.hod.project.hive.dto.*;
 import com.hod.project.hive.entity.Project;
 
-import com.hod.project.hive.entity.ProjectDetail;
+import com.hod.project.hive.dto.ProjectDetailResponse;
 import com.hod.project.hive.entity.ProjectManMonth;
 import com.hod.project.hive.mapper.ProjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +24,13 @@ public class ProjectService {
     private ProjectMapper projectMapper;
 
     @Transactional
-    public void addProject(ProjectDto project) {
+    public void addProject(ProjectRequest project) {
         projectMapper.addProject(project);
 
         int projectId = projectMapper.findLastInsertId();
 
         List<String> userList = new ArrayList<>();
-        for(ProjectDto.ProjectUser user : project.getUserList()) {
+        for(ProjectRequest.ProjectUser user : project.getUserList()) {
             userList.add(user.getId());
         }
 
@@ -66,33 +66,36 @@ public class ProjectService {
         return projectList;
     }
 
-    public ProjectDetail getProjectDetail(int id) {
-        ProjectDetail detail = projectMapper.findProjectDetail(id);
-        detail.setExpectMm(projectMapper.findProjectTotalMm(id, "EXPECT", null));
-        detail.setActualMm(projectMapper.findProjectTotalMm(id, "ACTUAL", null));
+    public ProjectDetailResponse getProjectDetail(int id) {
+        ProjectDetailResponse detail = projectMapper.findProjectDetail(id);
 
-        List<ProjectDetail.ProjectUser> userList = projectMapper.findUserList(id);
-        for(ProjectDetail.ProjectUser user : userList) {
-            user.setActualMm(projectMapper.findProjectTotalMm(id, "ACTUAL", user.getId()));
+        if(detail != null) {
+            detail.setExpectMm(projectMapper.findProjectTotalMm(id, "EXPECT", null));
+            detail.setActualMm(projectMapper.findProjectTotalMm(id, "ACTUAL", null));
+
+            List<ProjectDetailResponse.ProjectUser> userList = projectMapper.findUserList(id);
+            for (ProjectDetailResponse.ProjectUser user : userList) {
+                user.setActualMm(projectMapper.findProjectTotalMm(id, "ACTUAL", user.getId()));
+            }
+
+            detail.setUserList(userList);
         }
-
-        detail.setUserList(userList);
 
         return detail;
     }
 
-    public void updateProject(ProjectDto project) {
+    public void updateProject(ProjectRequest project) {
         projectMapper.updateProject(project);
 
         /* db에 있는 user와 새로들어온 user를 비교해 처리 */
         List<String> dbUserList = new ArrayList<>();
         List<String> newUserList = new ArrayList<>();
 
-        for(ProjectDetail.ProjectUser user : projectMapper.findUserList(project.getId())) {
+        for(ProjectDetailResponse.ProjectUser user : projectMapper.findUserList(project.getId())) {
             dbUserList.add(user.getId());
         }
 
-        for(ProjectDto.ProjectUser user : project.getUserList()) {
+        for(ProjectRequest.ProjectUser user : project.getUserList()) {
             newUserList.add(user.getId());
         }
 
@@ -110,7 +113,7 @@ public class ProjectService {
          }
 
         // update user PM이 바뀐 경우만 적용.
-        ProjectDetail detail = projectMapper.findProjectDetail(project.getId());
+        ProjectDetailResponse detail = projectMapper.findProjectDetail(project.getId());
         if(detail.getPmId().equals(project.getPmId())) {
             projectMapper.updateProjectUser(project.getId(), detail.getPmId(), "");
             projectMapper.updateProjectUser(project.getId(), project.getPmId(), "PM");
@@ -256,11 +259,12 @@ public class ProjectService {
         if (count == 0) {
             // TODO: 업데이트 행 수 반환, 0 이면 실패 처리
         }
+    }
 
     @Transactional
     public void deleteProject(int id) {
         projectMapper.deleteProjectMm(id, null);
         projectMapper.deleteProjectUser(id, null);
-        projectMapper.deletePrject(id);
+        projectMapper.deleteProject(id);
     }
 }

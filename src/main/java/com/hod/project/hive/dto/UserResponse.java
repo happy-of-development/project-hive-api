@@ -3,10 +3,10 @@ package com.hod.project.hive.dto;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class UserResponse {
     String id;
     String name;
-    String password;
+    String teamName;
     String photo;
     String mobile;
     String email;

@@ -1,7 +1,7 @@
 package com.hod.project.hive.service;
 
-import com.hod.project.hive.dto.UserDto;
-import com.hod.project.hive.entity.User;
+import com.hod.project.hive.dto.UserRequest;
+import com.hod.project.hive.dto.UserResponse;
 
 import com.hod.project.hive.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -14,13 +14,13 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
-    public void addUser(UserDto user) { userMapper.addUser(user); }
+    public void addUser(UserRequest user) { userMapper.addUser(user); }
 
-    public User getUser(String id) {
+    public UserResponse getUser(String id) {
         return userMapper.findUser(id);
     }
 
-    public void updateUser(UserDto user) {
+    public void updateUser(UserRequest user) {
         userMapper.updateUser(user);
     }
 
