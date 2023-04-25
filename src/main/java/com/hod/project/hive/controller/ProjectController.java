@@ -26,8 +26,8 @@ public class ProjectController {
     ProjectService projectService;
 
     @PostMapping("/project")
-    public ResponseEntity<ApiResponse> addProject(@RequestBody ProjectRequest project) {
-        projectService.addProject(project);
+    public ResponseEntity<ApiResponse> addProject(@RequestBody ProjectRequest request) {
+        projectService.addProject(request);
 
         return ResponseEntity.ok(ApiResponseFactory.create(null));
     }
@@ -43,14 +43,14 @@ public class ProjectController {
 
     @GetMapping("/project/detail")
     public ResponseEntity<ApiResponse> getProjectDetail(@RequestParam int id) {
-       ProjectDetailResponse detail = projectService.getProjectDetail(id);
+       ProjectDetailResponse response = projectService.getProjectDetail(id);
 
-       return ResponseEntity.ok(ApiResponseFactory.create(detail));
+       return ResponseEntity.ok(ApiResponseFactory.create(response));
     }
 
     @PutMapping("/project")
-    public ResponseEntity<ApiResponse> updateProject(@RequestBody ProjectRequest project) {
-       projectService.updateProject(project);
+    public ResponseEntity<ApiResponse> updateProject(@RequestBody ProjectRequest request) {
+       projectService.updateProject(request);
 
        return ResponseEntity.ok(ApiResponseFactory.create(null));
     }

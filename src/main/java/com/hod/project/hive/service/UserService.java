@@ -14,14 +14,14 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
-    public void addUser(UserRequest user) { userMapper.addUser(user); }
+    public void addUser(UserRequest request) { userMapper.addUser(request); }
 
     public UserResponse getUser(String id) {
         return userMapper.findUser(id);
     }
 
-    public void updateUser(UserRequest user) {
-        userMapper.updateUser(user);
+    public void updateUser(UserRequest request) {
+        userMapper.updateUser(request);
     }
 
     public void deleteUser(String id) {

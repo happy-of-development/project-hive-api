@@ -24,18 +24,18 @@ public class ProjectService {
     private ProjectMapper projectMapper;
 
     @Transactional
-    public void addProject(ProjectRequest project) {
-        projectMapper.addProject(project);
+    public void addProject(ProjectRequest request) {
+        projectMapper.addProject(request);
 
         int projectId = projectMapper.findLastInsertId();
 
         List<String> userList = new ArrayList<>();
-        for(ProjectRequest.ProjectUser user : project.getUserList()) {
+        for(ProjectRequest.ProjectUser user : request.getUserList()) {
             userList.add(user.getId());
         }
 
-        addProjectUser(projectId, userList, project.getPmId());
-        addProjectMm(projectId, project.getBeginDate(), project.getEndDate(), userList);
+        addProjectUser(projectId, userList, request.getPmId());
+        addProjectMm(projectId, request.getBeginDate(), request.getEndDate(), userList);
     }
 
     public void addProjectUser(int projectId, List<String> userList, String pmId) {
@@ -67,60 +67,60 @@ public class ProjectService {
     }
 
     public ProjectDetailResponse getProjectDetail(int id) {
-        ProjectDetailResponse detail = projectMapper.findProjectDetail(id);
+        ProjectDetailResponse result = projectMapper.findProjectDetail(id);
 
-        if(detail != null) {
-            detail.setExpectMm(projectMapper.findProjectTotalMm(id, "EXPECT", null));
-            detail.setActualMm(projectMapper.findProjectTotalMm(id, "ACTUAL", null));
+        if(result != null) {
+            result.setExpectMm(projectMapper.findProjectTotalMm(id, "EXPECT", null));
+            result.setActualMm(projectMapper.findProjectTotalMm(id, "ACTUAL", null));
 
             List<ProjectDetailResponse.ProjectUser> userList = projectMapper.findUserList(id);
             for (ProjectDetailResponse.ProjectUser user : userList) {
                 user.setActualMm(projectMapper.findProjectTotalMm(id, "ACTUAL", user.getId()));
             }
 
-            detail.setUserList(userList);
+            result.setUserList(userList);
         }
 
-        return detail;
+        return result;
     }
 
-    public void updateProject(ProjectRequest project) {
-        projectMapper.updateProject(project);
+    public void updateProject(ProjectRequest request) {
+        projectMapper.updateProject(request);
 
         /* db에 있는 user와 새로들어온 user를 비교해 처리 */
         List<String> dbUserList = new ArrayList<>();
         List<String> newUserList = new ArrayList<>();
 
-        for(ProjectDetailResponse.ProjectUser user : projectMapper.findUserList(project.getId())) {
+        for(ProjectDetailResponse.ProjectUser user : projectMapper.findUserList(request.getId())) {
             dbUserList.add(user.getId());
         }
 
-        for(ProjectRequest.ProjectUser user : project.getUserList()) {
+        for(ProjectRequest.ProjectUser user : request.getUserList()) {
             newUserList.add(user.getId());
         }
 
         // insert user
         List<String> insertUserList = newUserList.stream().filter(element -> !dbUserList.contains(element)).collect(Collectors.toList());
-        addProjectUser(project.getId(), insertUserList, ""); // 아래에서 PM 업데이트가 필요하면 처리함.
-        addProjectMm(project.getId(), project.getBeginDate(), project.getEndDate(), insertUserList);
+        addProjectUser(request.getId(), insertUserList, ""); // 아래에서 PM 업데이트가 필요하면 처리함.
+        addProjectMm(request.getId(), request.getBeginDate(), request.getEndDate(), insertUserList);
 
         // delete user
         List<String> deleteUserList = dbUserList.stream()
                 .filter(element -> !newUserList.contains(element)).collect(Collectors.toList());
         for(String deleteUser : deleteUserList) {
-            projectMapper.deleteProjectMm(project.getId(), deleteUser);
-            projectMapper.deleteProjectUser(project.getId(), deleteUser);
+            projectMapper.deleteProjectMm(request.getId(), deleteUser);
+            projectMapper.deleteProjectUser(request.getId(), deleteUser);
          }
 
         // update user PM이 바뀐 경우만 적용.
-        ProjectDetailResponse detail = projectMapper.findProjectDetail(project.getId());
-        if(detail.getPmId().equals(project.getPmId())) {
-            projectMapper.updateProjectUser(project.getId(), detail.getPmId(), "");
-            projectMapper.updateProjectUser(project.getId(), project.getPmId(), "PM");
+        ProjectDetailResponse detail = projectMapper.findProjectDetail(request.getId());
+        if(detail.getPmId().equals(request.getPmId())) {
+            projectMapper.updateProjectUser(request.getId(), detail.getPmId(), "");
+            projectMapper.updateProjectUser(request.getId(), request.getPmId(), "PM");
         }
 
         newUserList.retainAll(dbUserList);
-        addProjectMm(project.getId(), project.getBeginDate(), project.getEndDate(), newUserList);
+        addProjectMm(request.getId(), request.getBeginDate(), request.getEndDate(), newUserList);
     }
 
     /**
