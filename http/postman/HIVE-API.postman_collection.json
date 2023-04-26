@@ -251,13 +251,30 @@
 			]
 		}
 	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "AAAA",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "token",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					"pm.globals.set(\"base_url\", \"http://localhost:9080\");"
+					"pm.globals.set(\"base_url\", \"http://localhost:9080\");",
+					"",
+					""
 				]
 			}
 		},
