@@ -9,16 +9,11 @@ import java.util.*;
 
 @Component
 public class SessionManager {
-    @Value("${sessionTimeout}")
-    private static int sessionTimeout;
 
-    @Value("$sessionDevToken")
-    private static String devToken;
+    @Value("${sessionDevToken}")
+    private String devToken;
 
     private Map<String, Session> sessionList = new Hashtable<>();
-
-    public SessionManager() {
-    }
 
     public synchronized void  addSession(String id, String token) {
         sessionList.put(token, new Session(id, token));
@@ -29,7 +24,7 @@ public class SessionManager {
     }
 
     public synchronized boolean isValidSession(String token) {
-        if(devToken.equals(token)) { // 다른 방법이 있으면 적용 필요
+        if(devToken.equals(token)) { // 다른 방법?
             return true;
         }
         Session session = sessionList.get(token);
@@ -65,6 +60,9 @@ public class SessionManager {
        private String id;
        private String token;
        private Date expireTime;
+
+       @Value("${sessionTimeout}")
+       private int sessionTimeout;
 
        public Session(String id, String token) {
            this.id = id;
