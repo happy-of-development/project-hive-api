@@ -1,0 +1,27 @@
+### 팀 추가
+POST http://{{ip}}:{{port}}/team
+Content-Type: application/json
+
+{
+  "name": "team1",
+  "desc": "테스트 팀1"
+}
+
+### 팀 조회
+GET http://{{ip}}:{{port}}/team
+    ?id=0
+Content-Type: application/json
+
+### 팀 업데이트
+PUT http://{{ip}}:{{port}}/team
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "team4",
+  "desc": "테스트 팀3"
+}
+
+### 팀 삭제
+DELETE http://{{ip}}:{{port}}/team/0
+Content-Type: application/json
