@@ -24,7 +24,7 @@ import java.util.Map;
 @RestController
 public class ProjectController {
     @Autowired
-    ProjectService projectService;
+    private ProjectService projectService;
 
     @PostMapping("/project")
     public ResponseEntity<ApiResponse> addProject(@RequestBody ProjectRequest request) {

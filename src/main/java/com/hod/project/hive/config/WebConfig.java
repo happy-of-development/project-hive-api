@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
-    TokenAuthInterceptor tokenAuthInterceptor;
+    private TokenAuthInterceptor tokenAuthInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

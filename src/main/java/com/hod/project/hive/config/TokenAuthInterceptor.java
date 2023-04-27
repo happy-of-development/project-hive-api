@@ -21,7 +21,7 @@ public class TokenAuthInterceptor implements HandlerInterceptor {
     private ObjectMapper objectMapper;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = request.getHeader("token");
+        String token = request.getHeader("x-auth-token");
         boolean isValidAuth = false;
 
         // 토큰 유효성 체크

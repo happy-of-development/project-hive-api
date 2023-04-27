@@ -6,16 +6,16 @@ import java.util.List;
 
 @Data
 public class ProjectRequest {
-    int id;
-    String name;
-    String pmId;
-    String beginDate;
-    String endDate;
-    String status;
-    List<ProjectUser> userList;
+    private int id;
+    private String name;
+    private String pmId;
+    private String beginDate;
+    private String endDate;
+    private String status;
+    private List<ProjectUser> userList;
 
-      @Data
-      public static class ProjectUser {
-          String id;
-      }
+    @Data
+    public static class ProjectUser {
+      private String id;
+    }
 }

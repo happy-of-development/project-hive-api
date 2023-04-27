@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class UserResponse {
-    String id;
-    String name;
-    String teamName;
-    String photo;
-    String mobile;
-    String email;
+    private String id;
+    private String name;
+    private String teamName;
+    private String photo;
+    private String mobile;
+    private String email;
 }
