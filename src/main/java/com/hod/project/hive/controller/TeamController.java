@@ -2,9 +2,8 @@ package com.hod.project.hive.controller;
 
 import com.hod.project.hive.common.factory.ApiResponseFactory;
 import com.hod.project.hive.common.vo.ApiResponse;
-import com.hod.project.hive.dto.TeamRequest;
+import com.hod.project.hive.dto.TeamUserRequest;
 import com.hod.project.hive.dto.TeamUserResponse;
-import com.hod.project.hive.entity.Team;
 import com.hod.project.hive.service.TeamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class TeamController {
     TeamService teamService;
 
     @PostMapping("/team")
-    public ResponseEntity<ApiResponse> addTeam(@RequestBody TeamRequest request) {
+    public ResponseEntity<ApiResponse> addTeam(@RequestBody TeamUserRequest request) {
         System.out.println("addTeam : " + request.getId());
         teamService.addTeam(request);
 
@@ -36,7 +35,7 @@ public class TeamController {
     }
 
     @PutMapping("/team")
-    public ResponseEntity<ApiResponse> updateTeam(@RequestBody TeamRequest request) {
+    public ResponseEntity<ApiResponse> updateTeam(@RequestBody TeamUserRequest request) {
         teamService.updateTeam(request);
 
         return ResponseEntity.ok(ApiResponseFactory.create(null));

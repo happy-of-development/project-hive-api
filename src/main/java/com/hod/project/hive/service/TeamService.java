@@ -1,18 +1,13 @@
 package com.hod.project.hive.service;
 
-import com.hod.project.hive.dto.ProjectDetailResponse;
-import com.hod.project.hive.dto.TeamRequest;
+import com.hod.project.hive.dto.TeamUserRequest;
 import com.hod.project.hive.dto.TeamUserResponse;
-import com.hod.project.hive.entity.Project;
-import com.hod.project.hive.entity.Team;
 import com.hod.project.hive.mapper.TeamMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -20,22 +15,32 @@ public class TeamService {
     @Autowired
     TeamMapper teamMapper;
 
-    public void addTeam(TeamRequest request) {
+    public void addTeam(TeamUserRequest request) {
         teamMapper.addTeam(request);
+
+        int teamId = teamMapper.findLastInsertId();
+
+        if (null == request.getTeamUserList())
+            return;
+
+        for (TeamUserRequest.TeamUser teamUser : request.getTeamUserList()) {
+            teamMapper.addTeamUser(teamId, teamUser.getUserName());
+        }
     }
 
     public TeamUserResponse getTeam(String id) {
-        TeamUserResponse teamUser = new TeamUserResponse();
+        TeamUserResponse teamUser;
 
         teamUser = teamMapper.findTeam(id);
 
         List<TeamUserResponse.TeamUser> user = teamMapper.findTeamUserList(id);
-        teamUser.setTeamUserList(user);
-
+        if (teamUser != null) {
+            teamUser.setTeamUserList(user);
+        }
         return teamUser;
     }
 
-    public void updateTeam(TeamRequest request) {
+    public void updateTeam(TeamUserRequest request) {
         teamMapper.updateTeam(request);
     }
 

@@ -3,13 +3,35 @@ POST http://{{ip}}:{{port}}/team
 Content-Type: application/json
 
 {
-  "name": "team1",
-  "desc": "테스트 팀1"
+  "name": "team2",
+  "desc": "테스트 팀2"
+}
+
+### 팀 추가
+POST http://{{ip}}:{{port}}/team
+Content-Type: application/json
+
+{
+  "name": "team3",
+  "desc": "테스트 팀3",
+  "teamUserList": [
+    {
+      "userName": "1번사용자"
+    },
+    {
+      "userName": "2번사용자"
+    }
+  ]
 }
 
 ### 팀 조회
 GET http://{{ip}}:{{port}}/team
-    ?id=0
+    ?id=1
+Content-Type: application/json
+
+### 팀 조회 없을 경우
+GET http://{{ip}}:{{port}}/team
+    ?id=999
 Content-Type: application/json
 
 ### 팀 업데이트
