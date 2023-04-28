@@ -9,13 +9,13 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class ProjectDetailResponse extends Project {
-    List<ProjectUser> userList;
+    private List<ProjectUser> userList;
 
     @Data
     public static class ProjectUser {
-        String id;
-        String name;
-        String team;
-        Float actualMm;
+        private String id;
+        private String name;
+        private String team;
+        private Float actualMm;
     }
 }

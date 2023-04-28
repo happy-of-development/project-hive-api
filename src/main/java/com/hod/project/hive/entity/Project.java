@@ -4,13 +4,13 @@ import lombok.Data;
 
 @Data
 public class Project {
-    int id;
-    String name;
-    String pmId;
-    String pmName;
-    String beginDate;
-    String endDate;
-    String status;
-    Float actualMm;
-    Float expectMm;
+    private int id;
+    private String name;
+    private String pmId;
+    private String pmName;
+    private String beginDate;
+    private String endDate;
+    private String status;
+    private Float actualMm;
+    private Float expectMm;
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     public void addUser(UserRequest request) { userMapper.addUser(request); }
 

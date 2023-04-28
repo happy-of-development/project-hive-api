@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class UserRequest {
-    String id;
-    String name;
-    String password;
-    String photo;
-    String mobile;
-    String email;
+    private String id;
+    private String name;
+    private String password;
+    private String photo;
+    private String mobile;
+    private String email;
 }
