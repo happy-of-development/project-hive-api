@@ -1,5 +1,7 @@
 package com.hod.project.hive.controller;
 
+import com.hod.project.hive.common.exception.ApiCode;
+import com.hod.project.hive.common.exception.ApiException;
 import com.hod.project.hive.common.factory.ApiResponseFactory;
 import com.hod.project.hive.common.vo.ApiResponse;
 import com.hod.project.hive.dto.UserDto;
@@ -28,7 +30,7 @@ public class UserController {
     public ResponseEntity<ApiResponse> getUser(@RequestParam String id) {
         User user = userService.getUser(id);
         if(user == null) {
-            return ResponseEntity.ok(ApiResponseFactory.createError("404", "사용자 정보가 없습니다."));
+            throw new ApiException(ApiCode.USER_NOT_FOUND);
         }
 
         return ResponseEntity.ok(ApiResponseFactory.create(user));

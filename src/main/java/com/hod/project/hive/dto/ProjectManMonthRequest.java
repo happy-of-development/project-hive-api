@@ -4,15 +4,27 @@ import com.hod.project.hive.common.dto.ManMonthDto;
 import com.hod.project.hive.entity.ProjectManMonth;
 import lombok.Data;
 
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Data
 public class ProjectManMonthRequest {
+	@NotBlank(message = "프로젝트 ID는 필수 입력값입니다.")
+	@Min(value = 1, message = "프로젝트 ID는 1 이상만 가능합니다.")
+	@Pattern(regexp="\\d{1,}", message = "프로젝트 ID는 숫자만 입력 가능합니다.")
 	private String projectId;
+
+	@NotBlank(message = "사용자 ID는 필수 입력값입니다.")
+	@Size(min = 4, max = 8, message = "사용자 ID는 4 ~ 8자 범위만 가능합니다.")
 	private String userId;
+
+	@NotBlank(message = "년도는 필수 입력값입니다.")
+	@Pattern(regexp="\\d{4}", message = "년도에 4자리 숫자만 입력 가능합니다.")
 	private String year;
+
+	@NotEmpty(message = "월별 데이터는 필수 입력값입니다.")
 	private List<ManMonthDto> mmList;
 
 	public List<ProjectManMonth> toProjectManMonthList() {

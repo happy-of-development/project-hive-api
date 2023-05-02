@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class ApiResponse<T> {
+
     private String result;
     private String reason;
 

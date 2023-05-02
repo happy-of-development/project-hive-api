@@ -9,8 +9,10 @@ import com.hod.project.hive.service.ProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Pattern;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,13 +43,16 @@ public class ProjectController {
     }
 
     @GetMapping("/project/mm")
-    public ResponseEntity<ApiResponse> getProjectManMonth(@RequestParam String year) {
+    public ResponseEntity<ApiResponse> getProjectManMonth(
+            @Pattern(regexp="\\d{4}", message = "년도에 4자리 숫자만 입력 가능합니다.")
+            @RequestParam String year
+    ) {
         ProjectManMonthResponse response = projectService.getProjectManMonth(year);
         return ResponseEntity.ok(ApiResponseFactory.create(response));
     }
 
     @PutMapping("/project/mm")
-    public ResponseEntity<ApiResponse> putProjectManMonth(@RequestBody ProjectManMonthRequest request) {
+    public ResponseEntity<ApiResponse> putProjectManMonth(@Validated @RequestBody ProjectManMonthRequest request) {
         projectService.updateProjectManMonth(request);
         return ResponseEntity.ok(ApiResponseFactory.create(null));
     }
