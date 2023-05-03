@@ -32,7 +32,7 @@ public class ProjectService {
         int projectId = projectMapper.findLastInsertId();
 
         List<String> userList = new ArrayList<>();
-        for(ProjectRequest.ProjectUser user : request.getUserList()) {
+        for (ProjectRequest.ProjectUser user : request.getUserList()) {
             userList.add(user.getId());
         }
 
@@ -41,8 +41,8 @@ public class ProjectService {
     }
 
     public void addProjectUser(int projectId, List<String> userList, String pmId) {
-        for(String userId : userList) {
-            projectMapper.addProjectUser(projectId, userId, userId.equals(pmId)?"PM":"");
+        for (String userId : userList) {
+            projectMapper.addProjectUser(projectId, userId, userId.equals(pmId) ? "PM" : "");
         }
     }
 
@@ -50,7 +50,7 @@ public class ProjectService {
         int beginYear = LocalDate.parse(beginDate).getYear();
         int endYear = LocalDate.parse(endDate).getYear();
 
-        for(String userId : userList) {
+        for (String userId : userList) {
             for (int i = beginYear; i <= endYear; i++) {
                 projectMapper.addProjectMm(projectId, userId, String.valueOf(i), "ACTUAL");
                 projectMapper.addProjectMm(projectId, userId, String.valueOf(i), "EXPECT");
@@ -59,10 +59,10 @@ public class ProjectService {
     }
 
     public List<Project> getProject(String beginDate, String endDate, String status) {
-        List<Project> projectList =  projectMapper.findProject(beginDate, endDate, status);
-        for(Project project : projectList) {
-           project.setExpectMm(projectMapper.findProjectTotalMm(project.getId(), "EXPECT", null));
-           project.setActualMm(projectMapper.findProjectTotalMm(project.getId(), "ACTUAL", null));
+        List<Project> projectList = projectMapper.findProject(beginDate, endDate, status);
+        for (Project project : projectList) {
+            project.setExpectMm(projectMapper.findProjectTotalMm(project.getId(), "EXPECT", null));
+            project.setActualMm(projectMapper.findProjectTotalMm(project.getId(), "ACTUAL", null));
         }
 
         return projectList;
@@ -71,7 +71,7 @@ public class ProjectService {
     public ProjectDetailResponse getProjectDetail(int id) {
         ProjectDetailResponse result = projectMapper.findProjectDetail(id);
 
-        if(result != null) {
+        if (result != null) {
             result.setExpectMm(projectMapper.findProjectTotalMm(id, "EXPECT", null));
             result.setActualMm(projectMapper.findProjectTotalMm(id, "ACTUAL", null));
 
@@ -93,11 +93,11 @@ public class ProjectService {
         List<String> dbUserList = new ArrayList<>();
         List<String> newUserList = new ArrayList<>();
 
-        for(ProjectDetailResponse.ProjectUser user : projectMapper.findUserList(request.getId())) {
+        for (ProjectDetailResponse.ProjectUser user : projectMapper.findUserList(request.getId())) {
             dbUserList.add(user.getId());
         }
 
-        for(ProjectRequest.ProjectUser user : request.getUserList()) {
+        for (ProjectRequest.ProjectUser user : request.getUserList()) {
             newUserList.add(user.getId());
         }
 
@@ -109,14 +109,14 @@ public class ProjectService {
         // delete user
         List<String> deleteUserList = dbUserList.stream()
                 .filter(element -> !newUserList.contains(element)).collect(Collectors.toList());
-        for(String deleteUser : deleteUserList) {
+        for (String deleteUser : deleteUserList) {
             projectMapper.deleteProjectMm(request.getId(), deleteUser);
             projectMapper.deleteProjectUser(request.getId(), deleteUser);
-         }
+        }
 
         // update user PM이 바뀐 경우만 적용.
         ProjectDetailResponse detail = projectMapper.findProjectDetail(request.getId());
-        if(detail.getPmId().equals(request.getPmId())) {
+        if (detail.getPmId().equals(request.getPmId())) {
             projectMapper.updateProjectUser(request.getId(), detail.getPmId(), "");
             projectMapper.updateProjectUser(request.getId(), request.getPmId(), "PM");
         }
@@ -129,8 +129,9 @@ public class ProjectService {
      * <pre>
      * 대시보드 > 프로젝트 > 개인 페이지 API
      * </pre>
+     *
      * @param projectYear 프로젝트 년도
-     * @param userId 사용자 아이디
+     * @param userId      사용자 아이디
      * @return
      */
     @Transactional
@@ -191,6 +192,7 @@ public class ProjectService {
      * <pre>
      *     프로젝트 MM 조회
      * </pre>
+     *
      * @param projectYear 프로젝트 년도
      * @return
      */
