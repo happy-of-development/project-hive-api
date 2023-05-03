@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class TeamService {
     @Autowired
-    TeamMapper teamMapper;
+    private TeamMapper teamMapper;
 
     public void addTeam(TeamUserRequest request) {
         teamMapper.addTeam(request);
@@ -38,12 +38,10 @@ public class TeamService {
             return null;
         }
 
-        if (teamList != null) {
-            for (TeamUserResponse.Team temp : teamList) {
-                List<TeamUserResponse.TeamUser> user = teamMapper.findTeamUserList(temp.getId());
-                if (user != null) {
-                    temp.setTeamUserList(user);
-                }
+        for (TeamUserResponse.Team temp : teamList) {
+            List<TeamUserResponse.TeamUser> user = teamMapper.findTeamUserList(temp.getId());
+            if (user != null) {
+                temp.setTeamUserList(user);
             }
         }
         team.setTeamList(teamList);

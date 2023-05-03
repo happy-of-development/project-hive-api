@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class TeamController {
     @Autowired
-    TeamService teamService;
+    private TeamService teamService;
 
     @PostMapping("/team")
     public ResponseEntity<ApiResponse> addTeam(@RequestBody TeamUserRequest request) {
