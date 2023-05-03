@@ -1,0 +1,4 @@
+### 없는 사용자 조회
+GET http://{{ip}}:{{port}}/user?id=111111
+Content-Type: application/json
+X-AUTH-TOKEN: {{token}}

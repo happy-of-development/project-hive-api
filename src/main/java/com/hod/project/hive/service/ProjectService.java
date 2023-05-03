@@ -1,6 +1,8 @@
 package com.hod.project.hive.service;
 
+import com.hod.project.hive.common.exception.ApiCode;
 import com.hod.project.hive.common.dto.ManMonthDto;
+import com.hod.project.hive.common.exception.ApiException;
 import com.hod.project.hive.dto.*;
 import com.hod.project.hive.entity.Project;
 
@@ -258,8 +260,8 @@ public class ProjectService {
     public void updateProjectManMonth(ProjectManMonthRequest request) {
         List<ProjectManMonth> list = request.toProjectManMonthList();
         int count = projectMapper.updateProjectManMonth(list);
-        if (count == 0) {
-            // TODO: 업데이트 행 수 반환, 0 이면 실패 처리
+        if (count != list.size()) {
+            throw new ApiException(ApiCode.DB_UPDATE_FAIL);
         }
     }
 

@@ -2,11 +2,13 @@
 GET http://{{ip}}:{{port}}/project/mm
     ?year=2023
 Content-Type: application/json
+X-AUTH-TOKEN: {{token}}
 
 
 ### mm 업데이트
 PUT http://{{ip}}:{{port}}/project/mm
 Content-Type: application/json
+X-AUTH-TOKEN: {{token}}
 
 {
   "projectId": 0,

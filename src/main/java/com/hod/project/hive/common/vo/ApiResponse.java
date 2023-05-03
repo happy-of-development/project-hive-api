@@ -5,8 +5,9 @@ import lombok.Data;
 
 @Data
 public class ApiResponse<T> {
-    private String result;
-    private String reason;
+
+    private String code;
+    private String message;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
