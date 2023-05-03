@@ -9,7 +9,15 @@ public class ApiException extends RuntimeException {
 		this.responseCode = responseCode;
 	}
 
-	public String getResult() {
+	public String getCode() {
 		return responseCode.getCode();
+	}
+
+	public String getMessage() {
+		return responseCode.getMessage();
+	}
+
+	public Object getData() {
+		return responseCode.getData();
 	}
 }

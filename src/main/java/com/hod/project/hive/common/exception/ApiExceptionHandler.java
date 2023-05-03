@@ -23,16 +23,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 	/**
 	 * <pre>
-	 * 컨트롤러 오류 처리
+	 * API 오류 처리
 	 * </pre>
 	 * @param e
 	 * @return
 	 */
 	@ExceptionHandler(ApiException.class)
-	public ResponseEntity<Object> handleControllerException(ApiException e) {
+	public ResponseEntity<Object> handleApiException(ApiException e) {
 		ApiResponse<Object> response = new ApiResponse<>();
-		response.setResult(e.getResult());
-		response.setReason(e.getMessage());
+		response.setCode(e.getCode());
+		response.setMessage(e.getMessage());
+		response.setData(e.getData());
 		return  ResponseEntity.ok(response);
 	}
 
@@ -54,8 +55,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				}).collect(Collectors.toList());
 
 		ApiResponse<Object> response = new ApiResponse<>();
-		response.setResult(ApiCode.INVALID_PARAMETER.getCode());
-		response.setReason(ApiCode.INVALID_PARAMETER.getMessage());
+		response.setCode(ApiCode.INVALID_PARAMETER.getCode());
+		response.setMessage(ApiCode.INVALID_PARAMETER.getMessage());
 		response.setData(data);
 
 		return  ResponseEntity.ok(response);
@@ -83,8 +84,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				}).collect(Collectors.toList());
 
 		ApiResponse<Object> response = new ApiResponse<>();
-		response.setResult(ApiCode.METHOD_ARGUMENT_NOT_VALID.getCode());
-		response.setReason(ApiCode.METHOD_ARGUMENT_NOT_VALID.getMessage());
+		response.setCode(ApiCode.METHOD_ARGUMENT_NOT_VALID.getCode());
+		response.setMessage(ApiCode.METHOD_ARGUMENT_NOT_VALID.getMessage());
 		response.setData(data);
 
 		return ResponseEntity.ok(response);
@@ -98,10 +99,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	 * @return
 	 */
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Object> handleException(Exception e) {
+	public ResponseEntity<Object> handleUnknownException(Exception e) {
 		ApiResponse<Object> response = new ApiResponse<>();
-		response.setResult(ApiCode.UNKNOWN_ERROR.getCode());
-		response.setReason(e.getMessage());
+		response.setCode(ApiCode.UNKNOWN_ERROR.getCode());
+		response.setMessage(e.getMessage());
 		return  ResponseEntity.ok(response);
 	}
 
