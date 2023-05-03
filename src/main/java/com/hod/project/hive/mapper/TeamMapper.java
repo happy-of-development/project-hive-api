@@ -11,7 +11,6 @@ import java.util.List;
 public interface TeamMapper {
     void addTeam(@Param("team") TeamUserRequest team);
     Integer findLastInsertId();
-
     void addTeamUser(@Param("teamId") int teamId, @Param("userName") String userName);
     TeamUserResponse findTeam(@Param("id") String id);
     void updateTeam(@Param("team") TeamUserRequest team);

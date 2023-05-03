@@ -20,8 +20,9 @@ public class TeamService {
 
         int teamId = teamMapper.findLastInsertId();
 
-        if (null == request.getTeamUserList())
+        if (null == request.getTeamUserList()) {
             return;
+        }
 
         for (TeamUserRequest.TeamUser teamUser : request.getTeamUserList()) {
             teamMapper.addTeamUser(teamId, teamUser.getUserName());
@@ -29,12 +30,12 @@ public class TeamService {
     }
 
     public TeamUserResponse getTeam(String id) {
-        TeamUserResponse teamUser;
-
-        teamUser = teamMapper.findTeam(id);
-
+        TeamUserResponse teamUser = teamMapper.findTeam(id);
+        if (teamUser == null) {
+            return null;
+        }
         List<TeamUserResponse.TeamUser> user = teamMapper.findTeamUserList(id);
-        if (teamUser != null) {
+        if (user != null) {
             teamUser.setTeamUserList(user);
         }
         return teamUser;
