@@ -44,16 +44,16 @@ public class ProjectController {
 
     @GetMapping("/project/detail")
     public ResponseEntity<ApiResponse> getProjectDetail(@RequestParam int id) {
-       ProjectDetailResponse response = projectService.getProjectDetail(id);
+        ProjectDetailResponse response = projectService.getProjectDetail(id);
 
-       return ResponseEntity.ok(ApiResponseFactory.create(response));
+        return ResponseEntity.ok(ApiResponseFactory.create(response));
     }
 
     @PutMapping("/project")
     public ResponseEntity<ApiResponse> updateProject(@RequestBody ProjectRequest request) {
-       projectService.updateProject(request);
+        projectService.updateProject(request);
 
-       return ResponseEntity.ok(ApiResponseFactory.create(null));
+        return ResponseEntity.ok(ApiResponseFactory.create(null));
     }
 
     @GetMapping("/project/mm")

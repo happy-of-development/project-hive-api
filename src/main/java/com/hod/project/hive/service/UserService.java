@@ -14,7 +14,9 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public void addUser(UserRequest request) { userMapper.addUser(request); }
+    public void addUser(UserRequest request) {
+        userMapper.addUser(request);
+    }
 
     public UserResponse getUser(String id) {
         return userMapper.findUser(id);

@@ -25,12 +25,12 @@ public class TokenAuthInterceptor implements HandlerInterceptor {
         boolean isValidAuth = false;
 
         // 토큰 유효성 체크
-        if(token != null && sessionManager.isValidSession(token)) {
+        if (token != null && sessionManager.isValidSession(token)) {
             isValidAuth = true;
         }
 
         // 유효성 체크 실패
-        if(!isValidAuth) {
+        if (!isValidAuth) {
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().write(objectMapper.writeValueAsString(ApiResponseFactory.createError("401", "세션이 만료 되었습니다. 다시 로그인 해주세요.")));
