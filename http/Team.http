@@ -16,10 +16,10 @@ Content-Type: application/json
   "desc": "테스트 팀3",
   "teamUserList": [
     {
-      "userName": "1번사용자"
+      "id": "admin"
     },
     {
-      "userName": "2번사용자"
+      "id": "10000000"
     }
   ]
 }
@@ -27,6 +27,10 @@ Content-Type: application/json
 ### 팀 조회
 GET http://{{ip}}:{{port}}/team
     ?id=1
+Content-Type: application/json
+
+### 팀 조회
+GET http://{{ip}}:{{port}}/team
 Content-Type: application/json
 
 ### 팀 조회 없을 경우

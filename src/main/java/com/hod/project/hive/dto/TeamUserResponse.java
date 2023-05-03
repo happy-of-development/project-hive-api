@@ -8,14 +8,18 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class TeamUserResponse {
-    int id;
-    String name;
-    String desc;
+    private List <TeamUserResponse.Team> teamList;
+    @Data
+    public static class Team {
+        private int id;
+        private String name;
+        private String desc;
 
-    List<TeamUserResponse.TeamUser> teamUserList;
-
+        private List<TeamUserResponse.TeamUser> teamUserList;
+    }
     @Data
     public static class TeamUser {
-        String userName;
+        private String id;
+        private String name;
     }
 }

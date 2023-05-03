@@ -11,10 +11,10 @@ import java.util.List;
 public interface TeamMapper {
     void addTeam(@Param("team") TeamUserRequest team);
     Integer findLastInsertId();
-    void addTeamUser(@Param("teamId") int teamId, @Param("userName") String userName);
-    TeamUserResponse findTeam(@Param("id") String id);
+    void addTeamUser(@Param("teamId") int teamId, @Param("userId") String userId);
+    List<TeamUserResponse.Team> findTeam(@Param("id") String id);
     void updateTeam(@Param("team") TeamUserRequest team);
-    List<TeamUserResponse.TeamUser> findTeamUserList(@Param("id") String id);
+    List<TeamUserResponse.TeamUser> findTeamUserList(@Param("id") int id);
     void deleteTeam(@Param("id") String id);
     void deleteTeamUser(@Param("id") String id);
 }

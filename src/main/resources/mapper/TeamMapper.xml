@@ -42,7 +42,7 @@
         )
         VALUES (
            #{teamId},
-           (select id from tb_user where name=#{userName}),
+           #{userId},
            '10000000',
            NOW(),
            '10000000',
@@ -50,12 +50,15 @@
         )
     </insert>
 
-    <select id="findTeam" parameterType="String" resultType="com.hod.project.hive.dto.TeamUserResponse">
+    <select id="findTeam" parameterType="String" resultType="com.hod.project.hive.dto.TeamUserResponse$Team">
         SELECT t.id id,
                t.name name,
                t.description desc,
         FROM tb_team t
-        WHERE t.id = #{id};
+        <if test="id != null">
+            WHERE t.id = #{id}
+        </if>
+
     </select>
 
     <update id="updateTeam" parameterType="com.hod.project.hive.dto.TeamUserRequest">
@@ -79,7 +82,8 @@
     </delete>
 
     <select id="findTeamUserList" resultType="com.hod.project.hive.dto.TeamUserResponse$TeamUser">
-        SELECT u.name userName
+        SELECT u.id id,
+               u.name name
         FROM tb_team_user tu
         JOIN tb_user u
             ON tu.user_id = u.id

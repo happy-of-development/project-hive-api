@@ -6,14 +6,14 @@ import java.util.List;
 
 @Data
 public class  TeamUserRequest {
-    int id;
-    String name;
-    String desc;
+    private int id;
+    private String name;
+    private String desc;
 
-    List<TeamUserRequest.TeamUser> teamUserList;
+    private List<TeamUserRequest.TeamUser> teamUserList;
 
     @Data
     public static class TeamUser {
-        String userName;
+        private String id;
     }
 }

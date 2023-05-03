@@ -25,7 +25,7 @@ public class TeamController {
     }
 
     @GetMapping("/team")
-    public ResponseEntity<ApiResponse> getTeam(@RequestParam String id) {
+    public ResponseEntity<ApiResponse> getTeam(@RequestParam(required = false) String id) {
         TeamUserResponse team = teamService.getTeam(id);
         if(team == null) {
             return ResponseEntity.ok(ApiResponseFactory.createError("404", "팀 정보가 없습니다."));

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -25,20 +26,29 @@ public class TeamService {
         }
 
         for (TeamUserRequest.TeamUser teamUser : request.getTeamUserList()) {
-            teamMapper.addTeamUser(teamId, teamUser.getUserName());
+            teamMapper.addTeamUser(teamId, teamUser.getId());
         }
     }
 
     public TeamUserResponse getTeam(String id) {
-        TeamUserResponse teamUser = teamMapper.findTeam(id);
-        if (teamUser == null) {
+        TeamUserResponse team = new TeamUserResponse();
+
+        List<TeamUserResponse.Team> teamList = teamMapper.findTeam(id);
+        if (teamList == null) {
             return null;
         }
-        List<TeamUserResponse.TeamUser> user = teamMapper.findTeamUserList(id);
-        if (user != null) {
-            teamUser.setTeamUserList(user);
+
+        if (teamList != null) {
+            for (TeamUserResponse.Team temp : teamList) {
+                List<TeamUserResponse.TeamUser> user = teamMapper.findTeamUserList(temp.getId());
+                if (user != null) {
+                    temp.setTeamUserList(user);
+                }
+            }
         }
-        return teamUser;
+        team.setTeamList(teamList);
+
+        return team;
     }
 
     public void updateTeam(TeamUserRequest request) {
