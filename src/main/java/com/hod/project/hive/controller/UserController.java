@@ -26,7 +26,7 @@ public class UserController {
     @GetMapping("/user")
     public ResponseEntity<ApiResponse> getUser(@RequestParam String id) {
         UserResponse response = userService.getUser(id);
-        if(response == null) {
+        if (response == null) {
             return ResponseEntity.ok(ApiResponseFactory.createError("404", "사용자 정보가 없습니다."));
         }
 
@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @PutMapping("/user")
-    public ResponseEntity<ApiResponse>  updateUser(@RequestBody UserRequest request) {
+    public ResponseEntity<ApiResponse> updateUser(@RequestBody UserRequest request) {
         userService.updateUser(request);
 
         return ResponseEntity.ok(ApiResponseFactory.create(null));
