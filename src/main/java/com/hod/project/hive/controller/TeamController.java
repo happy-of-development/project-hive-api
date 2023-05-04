@@ -18,7 +18,7 @@ public class TeamController {
 
     @PostMapping("/team")
     public ResponseEntity<ApiResponse> addTeam(@RequestBody TeamUserRequest request) {
-        System.out.println("addTeam : " + request.getId());
+        log.debug("addTeam : " + request.getId());
         teamService.addTeam(request);
 
         return ResponseEntity.ok(ApiResponseFactory.create(null));

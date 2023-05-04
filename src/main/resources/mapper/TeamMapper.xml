@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hod.project.hive.mapper.TeamMapper">
 
-    <insert id="addTeam" parameterType="com.hod.project.hive.dto.TeamUserRequest">
+    <insert id="addTeam" parameterType="com.hod.project.hive.dto.TeamUserRequest" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tb_team (
             name,
             description,
@@ -21,15 +21,7 @@
             '10000000',
             NOW()
             )
-
-        <selectKey keyProperty="id" resultType="Integer" order="AFTER" >
-            SELECT LAST_INSERT_ID()
-        </selectKey>
     </insert>
-
-    <select id="findLastInsertId" resultType="Integer">
-        SELECT LAST_INSERT_ID()
-    </select>
 
     <insert id="addTeamUser">
         INSERT INTO tb_team_user (

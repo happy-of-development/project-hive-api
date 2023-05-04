@@ -9,8 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface TeamMapper {
-    void addTeam(@Param("team") TeamUserRequest team);
-    Integer findLastInsertId();
+    int addTeam(@Param("team") TeamUserRequest team);
     void addTeamUser(@Param("teamId") int teamId, @Param("userId") String userId);
     List<TeamUserResponse.Team> findTeam(@Param("id") String id);
     void updateTeam(@Param("team") TeamUserRequest team);

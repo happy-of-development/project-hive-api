@@ -6,6 +6,7 @@ import com.hod.project.hive.mapper.TeamMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +17,11 @@ public class TeamService {
     @Autowired
     private TeamMapper teamMapper;
 
+    @Transactional
     public void addTeam(TeamUserRequest request) {
-        teamMapper.addTeam(request);
+        int teamId = teamMapper.addTeam(request);
 
-        int teamId = teamMapper.findLastInsertId();
-
-        if (null == request.getTeamUserList()) {
+        if (request.getTeamUserList() == null) {
             return;
         }
 
@@ -53,6 +53,7 @@ public class TeamService {
         teamMapper.updateTeam(request);
     }
 
+    @Transactional
     public void deleteTeam(String id) {
         teamMapper.deleteTeamUser(id);
         teamMapper.deleteTeam(id);
