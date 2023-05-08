@@ -31,8 +31,6 @@ public class TeamService {
     }
 
     public TeamUserResponse getTeam(String id) {
-        TeamUserResponse team = new TeamUserResponse();
-
         List<TeamUserResponse.Team> teamList = teamMapper.findTeam(id);
         if (teamList == null) {
             return null;
@@ -44,6 +42,8 @@ public class TeamService {
                 temp.setTeamUserList(user);
             }
         }
+        TeamUserResponse team = new TeamUserResponse();
+
         team.setTeamList(teamList);
 
         return team;
