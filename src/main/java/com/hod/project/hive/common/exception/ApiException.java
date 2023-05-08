@@ -1,8 +1,15 @@
 package com.hod.project.hive.common.exception;
 
+import org.springframework.util.StringUtils;
+
 public class ApiException extends RuntimeException {
 
 	private ApiCode responseCode;
+
+	public ApiException(ApiCode responseCode, String message) {
+		super(message);
+		this.responseCode = responseCode;
+	}
 
 	public ApiException(ApiCode responseCode) {
 		super(responseCode.getMessage());
@@ -14,7 +21,7 @@ public class ApiException extends RuntimeException {
 	}
 
 	public String getMessage() {
-		return responseCode.getMessage();
+		return super.getMessage();
 	}
 
 	public Object getData() {

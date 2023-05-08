@@ -26,15 +26,15 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/user")
-    public ResponseEntity<ApiResponse> addUser(@RequestBody @Validated UserRequest request) {
+    public ResponseEntity<ApiResponse> addUser(@Validated @RequestBody UserRequest request) {
         userService.addUser(request);
 
         return ResponseEntity.ok(ApiResponseFactory.create(null));
     }
 
     @GetMapping("/user")
-    public ResponseEntity<ApiResponse> getUser(@RequestParam @NotBlank(message = "id가 입력되지 않았습니다.")
-                                               @Pattern(regexp = "^[a-zA-Z0-9]{8}$", message = "id 형식이 잘못 되었습니다.") String id) {
+    public ResponseEntity<ApiResponse> getUser(@NotBlank(message = "id가 입력되지 않았습니다.")
+                                               @Pattern(regexp = "^[a-zA-Z0-9]{8}$", message = "id 형식이 잘못 되었습니다.") @RequestParam String id) {
         UserResponse response = userService.getUser(id);
         if (response == null) {
             throw new ApiException(ApiCode.USER_NOT_FOUND);
@@ -44,15 +44,15 @@ public class UserController {
     }
 
     @PutMapping("/user")
-    public ResponseEntity<ApiResponse> updateUser(@RequestBody @Validated(UserRequest.Update.class) UserRequest request) {
+    public ResponseEntity<ApiResponse> updateUser(@Validated(UserRequest.Update.class) @RequestBody UserRequest request) {
         userService.updateUser(request);
 
         return ResponseEntity.ok(ApiResponseFactory.create(null));
     }
 
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<ApiResponse> deleteUser(@PathVariable @NotBlank(message = "id가 입력되지 않았습니다.")
-                                                  @Pattern(regexp = "^[a-zA-Z0-9]{8}$", message = "id 형식이 잘못 되었습니다.") String id) {
+    public ResponseEntity<ApiResponse> deleteUser(@NotBlank(message = "id가 입력되지 않았습니다.")
+                                                  @Pattern(regexp = "^[a-zA-Z0-9]{8}$", message = "id 형식이 잘못 되었습니다.") @PathVariable String id) {
         userService.deleteUser(id);
 
         return ResponseEntity.ok(ApiResponseFactory.create(null));
