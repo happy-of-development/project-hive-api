@@ -17,13 +17,13 @@
             #{team.name},
             #{team.desc},
             #{team.createdId},
-            #{team.createdDate},
+            IFNULL(#{team.createdDate},NOW()),
             #{team.modifiedId},
             #{team.modifiedDate}
             )
     </insert>
 
-    <insert id="addTeamUser" parameterType="com.hod.project.hive.dto.TeamUserRequest">
+    <insert id="addTeamUserList" parameterType="com.hod.project.hive.dto.TeamUserRequest">
 
         INSERT INTO tb_team_user (
             team_id,
@@ -39,7 +39,7 @@
             #{team.id},
             #{item.userId},
             #{team.createdId},
-            #{team.createdDate},
+            IFNULL(#{team.createdDate},NOW()),
             #{team.modifiedId},
             #{team.modifiedDate}
         )

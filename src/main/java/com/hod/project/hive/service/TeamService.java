@@ -27,7 +27,8 @@ public class TeamService {
 
     @Transactional
     public void addTeam(TeamUserRequest request) {
-        request.setCreatedId("1111111"); // 로그인 후 수정 예정
+        // TODO: 로그인 후 수정 예정
+        request.setCreatedId("1111111");
         request.setCreatedDate(getCurrentData());
 
         int teamId = teamMapper.addTeam(request);
@@ -38,7 +39,7 @@ public class TeamService {
         }
 
         request.setId(teamId);
-        teamMapper.addTeamUser(request, teamUserList);
+        teamMapper.addTeamUserList(request, teamUserList);
     }
 
     public TeamUserResponse getTeam(String id) {
@@ -61,7 +62,8 @@ public class TeamService {
     }
 
     public void updateTeam(TeamUserRequest request) {
-        request.setModifiedId("1111111"); // 로그인 후 수정 예정
+        // TODO: 로그인 후 수정 예정
+        request.setModifiedId("1111111");
         request.setModifiedDate(getCurrentData());
 
         teamMapper.updateTeam(request);
