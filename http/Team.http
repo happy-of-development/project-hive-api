@@ -16,10 +16,10 @@ Content-Type: application/json
   "desc": "테스트 팀3",
   "teamUserList": [
     {
-      "id": "admin"
+      "userId": "admin"
     },
     {
-      "id": "10000000"
+      "userId": "10000000"
     }
   ]
 }

@@ -16,14 +16,15 @@
         VALUES (
             #{team.name},
             #{team.desc},
-            '10000000',
-            NOW(),
-            '10000000',
-            NOW()
+            #{team.createdId},
+            #{team.createdDate},
+            #{team.modifiedId},
+            #{team.modifiedDate}
             )
     </insert>
 
-    <insert id="addTeamUser">
+    <insert id="addTeamUser" parameterType="com.hod.project.hive.dto.TeamUserRequest">
+
         INSERT INTO tb_team_user (
             team_id,
             user_id,
@@ -32,14 +33,17 @@
             modified_id,
             modified_date
         )
-        VALUES (
-           #{teamId},
-           #{userId},
-           '10000000',
-           NOW(),
-           '10000000',
-           NOW()
+        VALUES
+        <foreach item="item" index="index" collection="list" separator=",">
+            (
+            #{team.id},
+            #{item.userId},
+            #{team.createdId},
+            #{team.createdDate},
+            #{team.modifiedId},
+            #{team.modifiedDate}
         )
+        </foreach>
     </insert>
 
     <select id="findTeam" parameterType="String" resultType="com.hod.project.hive.dto.TeamUserResponse$Team">

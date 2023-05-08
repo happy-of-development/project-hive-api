@@ -7,8 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -17,17 +17,28 @@ public class TeamService {
     @Autowired
     private TeamMapper teamMapper;
 
+    private String getCurrentData() {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String str = format.format(date);
+
+        return str;
+    }
+
     @Transactional
     public void addTeam(TeamUserRequest request) {
+        request.setCreatedId("1111111"); // 로그인 후 수정 예정
+        request.setCreatedDate(getCurrentData());
+
         int teamId = teamMapper.addTeam(request);
 
-        if (request.getTeamUserList() == null) {
+        List<TeamUserRequest.TeamUser> teamUserList = request.getTeamUserList();
+        if (teamUserList == null) {
             return;
         }
 
-        for (TeamUserRequest.TeamUser teamUser : request.getTeamUserList()) {
-            teamMapper.addTeamUser(teamId, teamUser.getId());
-        }
+        request.setId(teamId);
+        teamMapper.addTeamUser(request, teamUserList);
     }
 
     public TeamUserResponse getTeam(String id) {
@@ -42,8 +53,8 @@ public class TeamService {
                 temp.setTeamUserList(user);
             }
         }
-        TeamUserResponse team = new TeamUserResponse();
 
+        TeamUserResponse team = new TeamUserResponse();
         team.setTeamList(teamList);
 
         return team;
