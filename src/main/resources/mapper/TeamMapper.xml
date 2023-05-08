@@ -17,7 +17,7 @@
             #{team.name},
             #{team.desc},
             #{team.createdId},
-            IFNULL(#{team.createdDate},NOW()),
+            IFNULL(#{team.createdDate}, NOW()),
             #{team.modifiedId},
             #{team.modifiedDate}
             )
@@ -39,7 +39,7 @@
             #{team.id},
             #{item.userId},
             #{team.createdId},
-            IFNULL(#{team.createdDate},NOW()),
+            IFNULL(#{team.createdDate}, NOW()),
             #{team.modifiedId},
             #{team.modifiedDate}
         )
