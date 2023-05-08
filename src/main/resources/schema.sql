@@ -14,7 +14,7 @@ create table tb_project
 
 create table tb_team
 (
-    id            int           not null comment '팀 아이디'
+    id            int           not null AUTO_INCREMENT comment '팀 아이디'
         primary key,
     name          varchar(50)   not null comment '팀 이름',
     description   varchar(200)  null comment '팀 설명',
