@@ -61,7 +61,8 @@
         UPDATE tb_team t
         SET t.name = #{team.name},
             t.description = #{team.desc},
-            t.modified_date = NOW()
+            t.modified_id = #{team.modifiedId},
+            t.modified_date = #{team.modifiedDate}
         WHERE t.id = #{team.id}
     </update>
 

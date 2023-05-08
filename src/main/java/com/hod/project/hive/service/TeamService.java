@@ -61,6 +61,9 @@ public class TeamService {
     }
 
     public void updateTeam(TeamUserRequest request) {
+        request.setModifiedId("1111111"); // 로그인 후 수정 예정
+        request.setModifiedDate(getCurrentData());
+
         teamMapper.updateTeam(request);
     }
 
