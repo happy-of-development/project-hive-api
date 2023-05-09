@@ -10,13 +10,4 @@ public class ApiResponseFactory {
         result.setData(object);
         return result;
     }
-
-    @Deprecated
-    public static ApiResponse<Object> createError(String result, String reason) {
-        ApiResponse<Object> response = new ApiResponse<>();
-        response.setCode(result);
-        response.setMessage(reason);
-
-        return response;
-    }
 }

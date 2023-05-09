@@ -1,7 +1,5 @@
 package com.hod.project.hive.common.exception;
 
-import org.springframework.util.StringUtils;
-
 public class ApiException extends RuntimeException {
 
 	private ApiCode responseCode;
