@@ -23,21 +23,21 @@ public class SessionManager {
         sessionList.remove(token);
     }
 
-    public synchronized boolean isValidSession(String token) {
+    public synchronized String getUserIdFromSession(String token) {
         if (devToken.equals(token)) {
-            return true;
+            return "DEV";
         }
         Session session = sessionList.get(token);
         if (session == null) {
-            return false;
+            return "";
         }
 
         if (session.isValid()) { // 세션 시간 유효
             session.resetExpireTime();
-            return true;
+            return session.getId();
         } else {
             removeSession(token);
-            return false;
+            return "";
         }
     }
 

@@ -1,16 +1,15 @@
 package com.hod.project.hive.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hod.project.hive.common.factory.ApiResponseFactory;
+import com.hod.project.hive.common.exception.ApiCode;
+import com.hod.project.hive.common.exception.ApiException;
 import com.hod.project.hive.common.sesssion.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.nio.charset.StandardCharsets;
 
 @Component
 public class TokenAuthInterceptor implements HandlerInterceptor {
@@ -25,17 +24,18 @@ public class TokenAuthInterceptor implements HandlerInterceptor {
         boolean isValidAuth = false;
 
         // 토큰 유효성 체크
-        if (token != null && sessionManager.isValidSession(token)) {
-            isValidAuth = true;
+        if (token != null) {
+            String userId = sessionManager.getUserIdFromSession(token);
+            if(!userId.isEmpty()) {
+                isValidAuth = true;
+
+                request.setAttribute("userId", userId);
+            }
         }
 
         // 유효성 체크 실패
         if (!isValidAuth) {
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.getWriter().write(objectMapper.writeValueAsString(ApiResponseFactory.createError("401", "세션이 만료 되었습니다. 다시 로그인 해주세요.")));
-
-            return false;
+            throw new ApiException(ApiCode.UNAUTHORIZED);
         }
 
         return true;
