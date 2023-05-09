@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -107,11 +108,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     // SQL Error
     @ExceptionHandler(value = {DataIntegrityViolationException.class})
-    public ResponseEntity<Object> handleConstraintViolationException(DataIntegrityViolationException ex) {
-        String message = ex.getMessage();
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         ApiResponse<Object> response = new ApiResponse<>();
         response.setCode(ApiCode.BAD_REQUEST.getCode());
-        response.setMessage(ApiCode.BAD_REQUEST.getMessage() + " " + message);
+        response.setMessage(ApiCode.BAD_REQUEST.getMessage() + " " + ex.getMessage());
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @Override
+    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ApiResponse<Object> response = new ApiResponse<>();
+        response.setCode(ApiCode.METHOD_NOT_SUPPORTED.getCode());
+        response.setMessage(ApiCode.METHOD_NOT_SUPPORTED.getMessage() + " " + ex.getMessage());
 
         return ResponseEntity.ok(response);
     }
