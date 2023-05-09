@@ -61,14 +61,14 @@ public class ProjectController {
     }
 
     @GetMapping("/project/detail")
-    public ResponseEntity<ApiResponse> getProjectDetail(@NotBlank(message = "id가 입력되지 않았습니다.") @RequestParam int id) {
+    public ResponseEntity<ApiResponse> getProjectDetail(@RequestParam int id) {
         ProjectDetailResponse response = projectService.getProjectDetail(id);
 
         return ResponseEntity.ok(ApiResponseFactory.create(response));
     }
 
     @PutMapping("/project")
-    public ResponseEntity<ApiResponse> updateProject(@Validated(ProjectRequest.Update.class) @RequestBody ProjectRequest request) {
+    public ResponseEntity<ApiResponse> updateProject(@Validated @RequestBody ProjectRequest request) {
         projectService.updateProject(request);
 
         return ResponseEntity.ok(ApiResponseFactory.create(null));

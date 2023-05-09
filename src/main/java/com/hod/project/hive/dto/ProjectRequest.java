@@ -10,7 +10,6 @@ import java.util.List;
 
 @Data
 public class ProjectRequest {
-    @NotBlank(groups = {Update.class}, message = "프로젝트 id가 없습니다.")
     private int id;
 
     @NotBlank(message = "프로젝트 이름을 입력해주세요.")
@@ -44,8 +43,5 @@ public class ProjectRequest {
         int result = beginDate.compareTo(endDate);
 
         return (result < 0);
-    }
-
-    public interface Update {
     }
 }

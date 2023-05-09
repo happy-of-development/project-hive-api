@@ -2,6 +2,7 @@ package com.hod.project.hive.common.exception;
 
 import com.hod.project.hive.common.vo.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -100,6 +101,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ApiResponse<Object> response = new ApiResponse<>();
         response.setCode(ApiCode.BAD_REQUEST.getCode());
         response.setMessage(ApiCode.BAD_REQUEST.getMessage() + " Parameter '" + e.getParameterName() + "'가 누락 되었습니다.");
+
+        return ResponseEntity.ok(response);
+    }
+
+    // SQL Error
+    @ExceptionHandler(value = {DataIntegrityViolationException.class})
+    public ResponseEntity<Object> handleConstraintViolationException(DataIntegrityViolationException ex) {
+        String message = ex.getMessage();
+        ApiResponse<Object> response = new ApiResponse<>();
+        response.setCode(ApiCode.BAD_REQUEST.getCode());
+        response.setMessage(ApiCode.BAD_REQUEST.getMessage() + " " + message);
 
         return ResponseEntity.ok(response);
     }
