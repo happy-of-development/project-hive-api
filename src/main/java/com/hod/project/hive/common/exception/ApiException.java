@@ -4,6 +4,11 @@ public class ApiException extends RuntimeException {
 
 	private ApiCode responseCode;
 
+	public ApiException(ApiCode responseCode, String message) {
+		super(message);
+		this.responseCode = responseCode;
+	}
+
 	public ApiException(ApiCode responseCode) {
 		super(responseCode.getMessage());
 		this.responseCode = responseCode;
@@ -14,7 +19,7 @@ public class ApiException extends RuntimeException {
 	}
 
 	public String getMessage() {
-		return responseCode.getMessage();
+		return super.getMessage();
 	}
 
 	public Object getData() {
