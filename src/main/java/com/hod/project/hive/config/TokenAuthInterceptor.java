@@ -24,8 +24,13 @@ public class TokenAuthInterceptor implements HandlerInterceptor {
         boolean isValidAuth = false;
 
         // 토큰 유효성 체크
-        if (token != null && sessionManager.isValidSession(token)) {
-            isValidAuth = true;
+        if (token != null) {
+            String userId = sessionManager.getUserIdFromSession(token);
+            if(!userId.isEmpty()) {
+                isValidAuth = true;
+
+                request.setAttribute("userId", userId);
+            }
         }
 
         // 유효성 체크 실패

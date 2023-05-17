@@ -21,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,9 @@ import java.util.Map;
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private HttpServletRequest servletRequest;
 
     @PostMapping("/project")
     public ResponseEntity<ApiResponse> addProject(@Validated @RequestBody ProjectRequest request) {
@@ -68,6 +72,7 @@ public class ProjectController {
     }
 
     @PutMapping("/project")
+
     public ResponseEntity<ApiResponse> updateProject(@Validated @RequestBody ProjectRequest request) {
         projectService.updateProject(request);
 
