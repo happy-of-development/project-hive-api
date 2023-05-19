@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b8ae80b5-2fda-4e55-93b1-e3088d01d522",
+		"_postman_id": "40e505a9-b5a3-4793-98e6-df5b5007937e",
 		"name": "HIVE-API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "10160811"
@@ -117,6 +117,21 @@
 			"item": [
 				{
 					"name": "GET /project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.sendRequest(pm.globals.get(\"base_url\") + \"/project?beginDate=2023-02-01&endDate=2024-12-31&status=ALL\", function (err, response) {",
+									"        console.log(response.json());",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -249,6 +264,260 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Test validation",
+			"item": [
+				{
+					"name": "\bUSER",
+					"item": [
+						{
+							"name": "GET /user(id blank)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/user?id=11111111",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "11111111"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /user(id pattern)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/user?id=11111111",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "11111111"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST /user(name blank)",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json;charset=UTF-8",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\" : \"11111111\",\n    \"name\" : \"\",\n    \"password\" : \"112233\",\n    \"mobile\" : \"01022223333\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/user",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST /user(name pattern)",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json;charset=UTF-8",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\" : \"2222\",\n    \"name\" : \"추가된 이름입니다. ...........\",\n    \"password\" : \"112233\",\n    \"mobile\" : \"01022223333\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/user",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST /user(mobile pattern)",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json;charset=UTF-8",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\" : \"2222\",\n    \"name\" : \"추가된 이름\",\n    \"password\" : \"112233\",\n    \"mobile\" : \"01022223333\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/user",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST /user(email pattern)",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json;charset=UTF-8",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\" : \"2222\",\n    \"name\" : \"추가된 이름\",\n    \"password\" : \"112233\",\n    \"mobile\" : \"01022223333\",\n    \"email\" : \"abc\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/user",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT /user(id blank)",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json;charset=UTF-8",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\" : \"11111111\",\n    \"name\" : \"바뀐이름\",\n    \"password\" : \"112233\",\n    \"mobile\" : \"01022223333\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/user",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT /user(id pattern)",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json;charset=UTF-8",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\" : \"11111111\",\n    \"name\" : \"바뀐이름\",\n    \"password\" : \"112233\",\n    \"mobile\" : \"01022223333\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/user",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE /user(not method)",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/user/11111111",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"11111111"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
 		}
 	],
 	"auth": {
@@ -256,12 +525,12 @@
 		"apikey": [
 			{
 				"key": "value",
-				"value": "AAAA",
+				"value": "48e16eae-6a8a-42ba-85f1-1a405c500b70",
 				"type": "string"
 			},
 			{
 				"key": "key",
-				"value": "token",
+				"value": "x-auth-token",
 				"type": "string"
 			}
 		]
