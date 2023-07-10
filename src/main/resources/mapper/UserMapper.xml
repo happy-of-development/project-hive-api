@@ -52,7 +52,9 @@
     <update id="updateUser" parameterType="com.hod.project.hive.dto.UserRequest">
         UPDATE tb_user u
         SET u.name = #{user.name},
-        	u.password = #{user.password},
+		<if test="user.password != null">
+			u.password = #{user.password},
+  		</if>
         	u.mobile = #{user.mobile},
         	u.email = #{user.email},
         	u.photo = #{user.photo},
